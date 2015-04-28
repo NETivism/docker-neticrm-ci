@@ -35,5 +35,8 @@ php ~/composer/vendor/bin/drush.php --yes pm-enable civicrm
 echo "Startup php server at $PORT ..."
 sleep 5s
 php ~/composer/vendor/bin/drush.php runserver 127.0.0.1:$PORT >> /dev/null &
+until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
+
+# headless browser testing..
 
 /bin/bash
