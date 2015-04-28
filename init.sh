@@ -30,16 +30,22 @@ git clone --depth=50 --branch=2.0-dev git://github.com/NETivism/netiCRM.git civi
 cd civicrm
 git submodule init
 git submodule update
-php ~/composer/vendor/bin/drush.php --yes pm-enable civicrm
+php ~/composer/vendor/bin/drush.php --yes --debug pm-enable civicrm
 
 # start php
 echo "Startup php server at $PORT ..."
 sleep 5s
 mkdir ${BASE}/html/log
+chown -R www-data /var/www/html/sites/default/files
 /usr/sbin/apache2ctl -D FOREGROUND > /dev/null 2>&1 &
-#php ~/composer/vendor/bin/drush.php runserver 127.0.0.1:$PORT >> /dev/null &
-#until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
 
+# testing...
+echo "Running testing..."
 # headless browser testing..
+echo "Headless testing"
+sleep 5s
+cd $BASE/html
+casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
+
 
 /bin/bash
