@@ -7,6 +7,8 @@ PORT=8888
 
 DIR="neticrm-${NETICRM}"
 
+echo "Starting MySQL server..."
+/usr/bin/mysqld_safe >/dev/null 2>&1 &
 mysql -uroot -e "CREATE DATABASE $DB CHARACTER SET utf8 COLLATE utf8_general_ci;"
 mysql -uroot -e "CREATE USER '$DB'@'%' IDENTIFIED BY '$PW';"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON $DB.* TO '$DB'@'%' WITH GRANT OPTION;"

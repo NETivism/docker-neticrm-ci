@@ -8,4 +8,3 @@ RUN \
   composer global require drush/drush:6.5.0
 
 ADD init.sh /init.sh
-CMD ["/init.sh"]
