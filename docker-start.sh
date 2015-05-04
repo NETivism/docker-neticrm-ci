@@ -12,6 +12,7 @@ docker run -d --name neticrm-ci \
   -v /etc/localtime:/etc/localtime:ro \
   -v $WORKDIR/init.sh:/init.sh \
   -e "TZ=Asia/Taipei" \
+  -e "RUNPORT=80" \
   -i -t netivism/neticrm-ci /init.sh
 
 echo "display logs..."

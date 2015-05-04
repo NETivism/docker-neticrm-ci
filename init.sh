@@ -45,7 +45,7 @@ echo "Running testing..."
 echo "Headless testing"
 sleep 5s
 cd $BASE/html
-casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js 80
+casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 
 
 /bin/bash
