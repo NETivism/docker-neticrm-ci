@@ -1,11 +1,6 @@
 WORKDIR=`pwd`
 
-echo "Remove exists containder neticrm-ci ..."
-docker stop neticrm-ci
-docker rm neticrm-ci
-
 echo "Updating repository netivism/neticrm-ci"
-sleep 3s
 docker pull netivism/neticrm-ci:7.x
 docker run -it --rm \
   --name neticrm-ci \
