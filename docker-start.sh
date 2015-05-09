@@ -7,7 +7,7 @@ docker rm neticrm-ci
 echo "Updating repository netivism/neticrm-ci"
 sleep 3s
 docker pull netivism/neticrm-ci:7.x
-docker run -dit --rm \
+docker run -it --rm \
   --name neticrm-ci \
   -p 8888:80 \
   -v /etc/localtime:/etc/localtime:ro \
@@ -15,6 +15,3 @@ docker run -dit --rm \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=80" \
   netivism/neticrm-ci:7.x
-
-echo "display logs..."
-docker logs -f neticrm-ci
