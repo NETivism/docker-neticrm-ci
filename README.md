@@ -6,5 +6,9 @@
 
 Start / Restart / Update / Pull container
 ```
+git checkout 6.x
+./docker-start.sh
+
+git checkout 7.x
 ./docker-start.sh
 ```
