@@ -47,3 +47,5 @@ sleep 5s
 cd $BASE/html
 casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 
+
+/bin/bash
