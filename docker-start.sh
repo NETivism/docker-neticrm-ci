@@ -13,7 +13,7 @@ docker run -d --name neticrm-ci \
   -v $WORKDIR/init.sh:/init.sh \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=80" \
-  -i -t netivism/neticrm-ci:7.x /init.sh
+  -i -t netivism/neticrm-ci:7.x
 
 echo "display logs..."
 docker logs -f neticrm-ci

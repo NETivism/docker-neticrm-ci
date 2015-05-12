@@ -29,3 +29,4 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 ADD init.sh /init.sh
+ENTRYPOINT /init.sh
