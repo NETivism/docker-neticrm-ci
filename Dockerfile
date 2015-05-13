@@ -9,7 +9,8 @@ RUN \
     php5-cgi \
     net-tools && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.0.0-alpha8 && \
-  composer global require drush/drush:6.5.0
+  composer global require drush/drush:6.5.0 && \
+  composer global require phpunit/phpunit:4.6
 
 # casperjs
 # Env
