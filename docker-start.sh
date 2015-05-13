@@ -6,7 +6,7 @@ docker rm neticrm-ci
 
 echo "Updating repository netivism/neticrm-ci"
 sleep 3s
-docker pull netivism/neticrm-ci
+docker pull netivism/neticrm-ci:7.x
 docker run -dit \
   --name neticrm-ci \
   -p 8888:80 \
