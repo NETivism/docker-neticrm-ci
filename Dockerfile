@@ -8,7 +8,7 @@ RUN \
   apt-get install -y \
     php5-cgi \
     net-tools && \
-  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.0.0-alpha8 && \
+  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
   composer global require drush/drush:6.5.0 && \
   composer global require phpunit/phpunit:4.6
 
