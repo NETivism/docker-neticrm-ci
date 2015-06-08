@@ -6,6 +6,7 @@ ENV COMPOSER_HOME /root/composer
 RUN \
   apt-get update && \
   apt-get install -y \
+    supervisor \
     php5-cgi \
     net-tools && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
@@ -30,5 +31,9 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+RUN \
+  mkdir -p /var/www/html/log/supervisor
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD init.sh /init.sh
-ENTRYPOINT /init.sh
+
+CMD ["/usr/bin/supervisord"]
