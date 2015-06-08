@@ -3,11 +3,13 @@
 while ! pgrep -u mysql mysqld > /dev/null; do sleep 3; done
 
 BASE="/var/www"
-DRUPAL="7.32"
-NETICRM="2.0-dev"
+DRUPAL=$DRUPAL
+NETICRM=$NETICRM
 DB=neticrmci
 PW=123456
 PORT=80
+
+echo "CI for Drupal-$DRUPAL + netiCRM-$NETICRM"
 
 echo "Install new database $DB"
 mysql -uroot -e "CREATE DATABASE $DB CHARACTER SET utf8 COLLATE utf8_general_ci;"
