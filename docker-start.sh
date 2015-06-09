@@ -6,7 +6,7 @@ if [ "$#" -ne 2 ]; then
 fi
 WORKDIR=`pwd`
 
-echo "Updating repository netivism/neticrm-ci"
+docker rm -f neticrm-ci
 docker run -d \
   --name neticrm-ci \
   -p 127.0.0.1:8888:80 \
