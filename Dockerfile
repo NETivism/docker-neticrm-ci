@@ -1,23 +1,23 @@
 FROM netivism/docker-wheezy-php55
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
+ENV \
+  COMPOSER_HOME=/root/composer \
+  PHANTOMJS_VERSION=1.9.7
+
 # composer
-ENV COMPOSER_HOME /root/composer
 RUN \
   apt-get update && \
   apt-get install -y \
     supervisor \
-    php5-cgi \
-    net-tools && \
+    net-tools \
+    gawk && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
   composer global require drush/drush:6.5.0 && \
   composer global require phpunit/phpunit:4.6 && \
-  composer global require phpunit/dbunit && \
-  pip install ansi2html
+  composer global require phpunit/dbunit
 
 # casperjs
-# Env
-ENV PHANTOMJS_VERSION 1.9.7
 RUN \
   apt-get install -y libfreetype6 libfontconfig bzip2 python && \
   mkdir -p /srv/var && \
@@ -30,11 +30,11 @@ RUN \
   ln -s /srv/var/casperjs/bin/casperjs /usr/bin/casperjs && \
   apt-get autoremove -y && \
   apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
-
-RUN \
+  rm -rf /var/lib/apt/lists/* && \
   mkdir -p /var/www/html/log/supervisor
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 ADD init.sh /init.sh
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD ansi2html.sh /usr/local/bin/ansi2html
 
 CMD ["/usr/bin/supervisord"]

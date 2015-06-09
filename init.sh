@@ -52,4 +52,4 @@ cd $BASE/html
 casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 
 # export testing log to html
-cat $BASE/html/ci.log | ansi2html -f 15px > $BASE/html/ci.html
+cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
