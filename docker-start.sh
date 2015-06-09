@@ -14,6 +14,7 @@ docker run -d \
   -v $WORKDIR/init.sh:/init.sh \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=80" \
+  -e "PATH=/root/composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
   -e "DRUPAL=$1" \
   -e "NETICRM=$2" \
   netivism/neticrm-ci

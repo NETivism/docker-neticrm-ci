@@ -34,7 +34,7 @@ git clone --depth=50 --branch=2.0-dev git://github.com/NETivism/netiCRM.git civi
 cd civicrm
 git submodule init
 git submodule update
-php ~/composer/vendor/bin/drush.php --yes pm-enable civicrm
+drush --yes pm-enable civicrm
 
 # start php
 echo "Startup php server at $PORT ..."
