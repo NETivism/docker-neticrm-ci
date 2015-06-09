@@ -36,7 +36,7 @@ RUN \
 
 ADD container/init.sh /init.sh
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD contaner/ansi2html.sh /usr/local/bin/ansi2html
+ADD container/ansi2html.sh /usr/local/bin/ansi2html
 
 WORKDIR /var/www/html
 CMD ["/usr/bin/supervisord"]
