@@ -26,6 +26,8 @@ mv $BASE/neticrm_build/drupal-${DRUPAL}/* $BASE/html/
 mv $BASE/neticrm_build/drupal-${DRUPAL}/.htaccess $BASE/html/
 
 echo "Install netiCRM ..."
+cat $BASE/html/ci.log | ansi2html -f 15px > $BASE/html/ci.html
+
 sleep 5s
 cd ${BASE}/html/sites/all/modules
 git clone --depth=50 --branch=2.0-dev git://github.com/NETivism/netiCRM.git civicrm
@@ -41,9 +43,13 @@ chown -R www-data /var/www/html/sites/default/files
 
 # testing...
 echo "Running testing..."
+cat $BASE/html/ci.log | ansi2html -f 15px > $BASE/html/ci.html
+
 # headless browser testing..
 echo "Headless testing"
 sleep 5s
 cd $BASE/html
 casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 
+# export testing log to html
+cat $BASE/html/ci.log | ansi2html -f 15px > $BASE/html/ci.html

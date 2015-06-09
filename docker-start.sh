@@ -9,7 +9,7 @@ WORKDIR=`pwd`
 echo "Updating repository netivism/neticrm-ci"
 docker run -d \
   --name neticrm-ci \
-  -p 8888:80 \
+  -p 127.0.0.1:8888:80 \
   -v /etc/localtime:/etc/localtime:ro \
   -v $WORKDIR/init.sh:/init.sh \
   -e "TZ=Asia/Taipei" \
