@@ -11,7 +11,6 @@ docker run -d \
   --name neticrm-ci \
   -p 127.0.0.1:8888:80 \
   -v /etc/localtime:/etc/localtime:ro \
-  -v $WORKDIR/init.sh:/init.sh \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=80" \
   -e "PATH=/root/composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
