@@ -36,13 +36,10 @@ git submodule init
 git submodule update
 drush --yes pm-enable civicrm
 
-# start php
-echo "Startup php server at $PORT ..."
-sleep 5s
 chown -R www-data /var/www/html/sites/default/files
 
 # testing...
-echo "Running testing..."
+echo "Running test..."
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 
 # headless browser testing..
@@ -52,4 +49,11 @@ cd $BASE/html
 casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 
 # export testing log to html
+cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+
+# phpunit 
+echo "Unit testing"
+cd $BASE/html/sites/all/modules/civicrm/tests/phpunit
+phpunit --colors api_v3_AllTests
+
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
