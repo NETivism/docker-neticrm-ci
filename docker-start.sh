@@ -13,8 +13,6 @@ docker run -d \
   -v /etc/localtime:/etc/localtime:ro \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=80" \
-  -e "PATH=/root/composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
-  -e "CIVICRM_COMPOSER_DIR=/root/composer" \
   -e "CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci" \
   -e "DRUPAL=$1" \
   -e "NETICRM=$2" \
