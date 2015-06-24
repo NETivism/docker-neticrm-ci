@@ -44,7 +44,7 @@ cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 
 # headless browser testing..
 echo "Headless testing"
-sleep 5s
+sleep 10s
 cd $BASE/html
 casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 
@@ -54,6 +54,8 @@ cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 # phpunit 
 echo "Unit testing"
 cd $BASE/html/sites/all/modules/civicrm/tests/phpunit
-phpunit --colors api_v3_AllTests
+export DRUPAL_ROOT=/var/www/html
+export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci
+phpunit --colors CRM/Core/Payment/ALLPAYTest.php
 
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
