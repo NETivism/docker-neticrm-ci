@@ -54,6 +54,8 @@ cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 # phpunit 
 echo "Unit testing"
 cd $BASE/html/sites/all/modules/civicrm/tests/phpunit
+drush en civicrm_allpay --yes
+drush en civicrm_demo --yes
 export DRUPAL_ROOT=/var/www/html
 export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci
 phpunit --colors CRM/Core/Payment/ALLPAYTest.php
