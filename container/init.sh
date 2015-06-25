@@ -38,6 +38,8 @@ cd civicrm
 git submodule init
 git submodule update
 drush --yes pm-enable civicrm
+drush en civicrm_allpay --yes
+drush en civicrm_demo --yes
 
 chown -R www-data /var/www/html/sites/default/files
 
@@ -51,6 +53,7 @@ date +"@ %Y-%m-%d %H:%M:%S %z"
 sleep 10s
 cd $BASE/html
 casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
+casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay.js
 
 # export testing log to html
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
@@ -59,8 +62,6 @@ cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 echo "Unit testing"
 date +"@ %Y-%m-%d %H:%M:%S %z"
 cd $BASE/html/sites/all/modules/civicrm/tests/phpunit
-drush en civicrm_allpay --yes
-drush en civicrm_demo --yes
 export DRUPAL_ROOT=/var/www/html
 export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci
 phpunit --colors=always CRM/Core/Payment/ALLPAYTest.php
