@@ -59,12 +59,23 @@ casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay.js
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 
 # phpunit 
-echo "Unit testing"
+echo "CiviCRM Unit Testing"
 date +"@ %Y-%m-%d %H:%M:%S %z"
 cd $BASE/html/sites/all/modules/civicrm/tests/phpunit
 export DRUPAL_ROOT=/var/www/html
 export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci
+
+date +"@ %Y-%m-%d %H:%M:%S %z"
+echo "Testing Allpay"
 phpunit --colors=always CRM/Core/Payment/ALLPAYTest.php
+
+#date +"@ %Y-%m-%d %H:%M:%S %z"
+#echo "Testing Neweb"
+#phpunit --colors=always CRM/Core/Payment/NewebTest.php
+
+#date +"@ %Y-%m-%d %H:%M:%S %z"
+#echo "Testing CiviCRM API"
+#phpunit --colors=always CRM/api/v3/AllTests.php
 
 date +"@ %Y-%m-%d %H:%M:%S %z"
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
