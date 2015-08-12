@@ -14,6 +14,7 @@ docker run -d \
   -v $WORKDIR/container/init.sh:/init.sh \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=80" \
+  -e "DRUPAL_ROOT=/var/www/html" \
   -e "CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci" \
   -e "DRUPAL=$1" \
   -e "NETICRM=$2" \
