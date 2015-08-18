@@ -83,4 +83,5 @@ casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay.js
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
-
+casperjs test sites/all/modules/civicrm/tests/casperjs/event_register.js
+cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
