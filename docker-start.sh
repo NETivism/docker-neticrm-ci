@@ -9,7 +9,7 @@ WORKDIR=`pwd`
 docker rm -f neticrm-ci
 docker run -d \
   --name neticrm-ci \
-  -p 127.0.0.1:8888:80 \
+  -p 8888:80 \
   -v /etc/localtime:/etc/localtime:ro \
   -v $WORKDIR/container/init.sh:/init.sh \
   -e "TZ=Asia/Taipei" \
