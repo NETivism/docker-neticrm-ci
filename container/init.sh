@@ -87,7 +87,16 @@ sleep 10s
 cd $BASE/html
 casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay.js
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+sleep 3s
+casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay_atm.js
+cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+sleep 3s
+casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay_barcode.js
+cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+sleep 3s
 casperjs test sites/all/modules/civicrm/tests/casperjs/event_register.js
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+sleep 3s
 casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+sleep 3s
