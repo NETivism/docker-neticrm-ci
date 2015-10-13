@@ -43,7 +43,7 @@ cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 
 sleep 5s
 cd ${BASE}/html/sites/all/modules
-git clone --depth=50 --branch=2.0-dev git://github.com/NETivism/netiCRM.git civicrm
+git clone --depth=50 --branch=develop git://github.com/NETivism/netiCRM.git civicrm
 cd civicrm
 git submodule init
 git submodule update
