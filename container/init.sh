@@ -50,6 +50,7 @@ git submodule update
 drush --yes pm-enable civicrm
 drush --yes pm-enable civicrm_allpay
 drush --yes pm-enable civicrm_neweb
+drush --yes pm-enable civicrm_spgateway
 drush --yes pm-enable civicrm_demo
 
 chown -R www-data /var/www/html/sites/default/files
