@@ -3,6 +3,7 @@
 while ! pgrep -u mysql mysqld > /dev/null; do sleep 3; done
 
 BASE="/var/www"
+mkdir -p $BASE/www
 DRUPAL=$DRUPAL
 NETICRM=$NETICRM
 DB=neticrmci
@@ -33,9 +34,10 @@ cd $BASE
 echo "Install Drupal ..."
 date +"@ %Y-%m-%d %H:%M:%S %z"
 sleep 5s
-php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --core=drupal-${DRUPAL} --no-server --db-url=mysql://${DB}:${PW}@127.0.0.1/${DB} --account-pass=123456 --site-name=netiCRM --enable=transliteration neticrm_build
-mv $BASE/neticrm_build/drupal-${DRUPAL}/* $BASE/html/
-mv $BASE/neticrm_build/drupal-${DRUPAL}/.htaccess $BASE/html/
+php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --core=drupal-$DRUPAL --no-server --db-url=mysql://root:${PW}@127.0.0.1/neticrmci --account-pass=123456 --site-name=netiCRM --enable=transliteration neticrmci
+
+mv $BASE/neticrmci/drupal-${DRUPAL}/* $BASE/html/
+mv $BASE/neticrmci/drupal-${DRUPAL}/.htaccess $BASE/html/
 
 echo "Install netiCRM ..."
 date +"@ %Y-%m-%d %H:%M:%S %z"
@@ -47,13 +49,16 @@ git clone --depth=50 --branch=develop git://github.com/NETivism/netiCRM.git civi
 cd civicrm
 git submodule init
 git submodule update
-drush --yes pm-enable civicrm
-drush --yes pm-enable civicrm_allpay
-drush --yes pm-enable civicrm_neweb
-drush --yes pm-enable civicrm_spgateway
+drush --yes pm-download simpletest
+drush --yes pm-enable civicrm simpletest
+drush --yes pm-enable civicrm_allpay civicrm_neweb civicrm_spgateway
+drush --yes variable-set civicrm_demo_sample_data 1
 drush --yes pm-enable civicrm_demo
+drush --yes variable-set error_level 0
 
 chown -R www-data /var/www/html/sites/default/files
+echo 'date_default_timezone_set("Asia/Taipei");' >> $DRUPAL_ROOT/sites/default/settings.php
+echo 'ini_set("error_reporting", E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);' >> $DRUPAL_ROOT/sites/default/settings.php
 
 # testing...
 echo "Running test..."
@@ -61,43 +66,44 @@ cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 
 # headless browser testing..
 echo "Unit testing"
-date +"@ %Y-%m-%d %H:%M:%S %z"
-cd $BASE/html/sites/all/modules/civicrm/tests/phpunit
-echo "Testing Allpay"
-phpunit --colors=always CRM/Core/Payment/ALLPAYTest.php
 
 date +"@ %Y-%m-%d %H:%M:%S %z"
-cd $BASE/html/sites/all/modules/civicrm/tests/phpunit
 echo "Testing Allpay"
-phpunit --colors=always CRM/Core/Payment/NewebTest.php
+cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/phpunit && phpunit CRM/Core/Payment/ALLPAYTest.php
 
-#date +"@ %Y-%m-%d %H:%M:%S %z"
-#echo "Testing Neweb"
-#phpunit --colors=always CRM/Core/Payment/NewebTest.php
+date +"@ %Y-%m-%d %H:%M:%S %z"
+echo "Testing Neweb"
+cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/phpunit && phpunit CRM/Core/Payment/NewebTest.php
+
+date +"@ %Y-%m-%d %H:%M:%S %z"
+echo "Testing SPGATEWAY"
+cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/phpunit && phpunit CRM/Core/Payment/SPGATEWAYTest.php
 
 #date +"@ %Y-%m-%d %H:%M:%S %z"
 #echo "Testing CiviCRM API"
 #phpunit --colors=always CRM/api/v3/AllTests.php
 
 date +"@ %Y-%m-%d %H:%M:%S %z"
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
 
 echo "Headless testing"
 date +"@ %Y-%m-%d %H:%M:%S %z"
 sleep 10s
-cd $BASE/html
+cd $DRUPAL_ROOT
+
+casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
+cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
+sleep 3s
+
+casperjs test sites/all/modules/civicrm/tests/casperjs/event_register.js
+cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
+sleep 3s
 casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay.js
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
 sleep 3s
 casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay_atm.js
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
 sleep 3s
 casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay_barcode.js
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
-sleep 3s
-casperjs test sites/all/modules/civicrm/tests/casperjs/event_register.js
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
-sleep 3s
-casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
+cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
 sleep 3s
