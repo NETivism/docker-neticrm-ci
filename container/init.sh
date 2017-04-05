@@ -2,6 +2,7 @@
 
 while ! pgrep -u mysql mysqld > /dev/null; do sleep 3; done
 
+REPOSDIR=`pwd`
 BASE="/var/www"
 mkdir -p $BASE/www
 DRUPAL=$DRUPAL
@@ -44,11 +45,7 @@ date +"@ %Y-%m-%d %H:%M:%S %z"
 cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
 
 sleep 5s
-cd ${BASE}/html/sites/all/modules
-git clone --depth=50 --branch=develop git://github.com/NETivism/netiCRM.git civicrm
-cd civicrm
-git submodule init
-git submodule update
+cp -R $REPOSDIR ${BASE}/html/sites/all/modules/civicrm
 drush --yes pm-download simpletest
 drush --yes pm-enable civicrm simpletest
 drush --yes pm-enable civicrm_allpay civicrm_neweb civicrm_spgateway
@@ -62,48 +59,3 @@ echo 'ini_set("error_reporting", E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED &
 
 # testing...
 echo "Running test..."
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
-
-# headless browser testing..
-echo "Unit testing"
-
-date +"@ %Y-%m-%d %H:%M:%S %z"
-echo "Testing Allpay"
-cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/phpunit && phpunit CRM/Core/Payment/ALLPAYTest.php
-
-date +"@ %Y-%m-%d %H:%M:%S %z"
-echo "Testing Neweb"
-cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/phpunit && phpunit CRM/Core/Payment/NewebTest.php
-
-date +"@ %Y-%m-%d %H:%M:%S %z"
-echo "Testing SPGATEWAY"
-cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/phpunit && phpunit CRM/Core/Payment/SPGATEWAYTest.php
-
-#date +"@ %Y-%m-%d %H:%M:%S %z"
-#echo "Testing CiviCRM API"
-#phpunit --colors=always CRM/api/v3/AllTests.php
-
-date +"@ %Y-%m-%d %H:%M:%S %z"
-cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
-
-echo "Headless testing"
-date +"@ %Y-%m-%d %H:%M:%S %z"
-sleep 10s
-cd $DRUPAL_ROOT
-
-casperjs test sites/all/modules/civicrm/tests/casperjs/pages.js
-cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
-sleep 3s
-
-casperjs test sites/all/modules/civicrm/tests/casperjs/event_register.js
-cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
-sleep 3s
-casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay.js
-cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
-sleep 3s
-casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay_atm.js
-cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
-sleep 3s
-casperjs test sites/all/modules/civicrm/tests/casperjs/contribution_allpay_barcode.js
-cat $DRUPAL_ROOT/ci.log | ansi2html --bg=dark > $DRUPAL_ROOT/ci.html
-sleep 3s
