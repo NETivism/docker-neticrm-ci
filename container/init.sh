@@ -14,18 +14,14 @@ PORT=80
 echo "export TERM=xterm" >> /root/.bashrc
 echo "export DRUPAL_ROOT=/var/www/html" >> /root/.bashrc
 echo "export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci" >> /root/.bashrc
+export DRUPAL_ROOT=/var/www/html
+export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci
 
 date +"@ %Y-%m-%d %H:%M:%S %z"
 echo "CI for Drupal-$DRUPAL + netiCRM-$NETICRM"
 
 echo "Install new database $DB"
 mysql -uroot -e "CREATE DATABASE $DB CHARACTER SET utf8 COLLATE utf8_general_ci;"
-
-# phpunit
-echo "CiviCRM Unit Testing"
-date +"@ %Y-%m-%d %H:%M:%S %z"
-export DRUPAL_ROOT=/var/www/html
-export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci
 
 cd $BASE
 
@@ -34,15 +30,12 @@ date +"@ %Y-%m-%d %H:%M:%S %z"
 sleep 5s
 php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --core=drupal-$DRUPAL --no-server --db-url=mysql://root:@127.0.0.1/$DB --account-pass=$PW --site-name=netiCRM-CI --enable=transliteration neticrmci
 
-mv $BASE/neticrmci/drupal-${DRUPAL}/* $BASE/html/
-mv $BASE/neticrmci/drupal-${DRUPAL}/.htaccess $BASE/html/
+mv $BASE/neticrmci/drupal-${DRUPAL}/* $DRUPAL_ROOT/
+mv $BASE/neticrmci/drupal-${DRUPAL}/.htaccess $DRUPAL_ROOT/
 
 echo "Install netiCRM ..."
-date +"@ %Y-%m-%d %H:%M:%S %z"
-cat $BASE/html/ci.log | ansi2html --bg=dark > $BASE/html/ci.html
-
-sleep 5s
-cp -R $REPOSDIR ${BASE}/html/sites/all/modules/civicrm
+cp -R $REPOSDIR $DRUPAL_ROOT/sites/all/modules/civicrm
+cd $DRUPAL_ROOT
 drush --yes pm-download simpletest
 drush --yes pm-enable civicrm simpletest
 drush --yes pm-enable civicrm_allpay civicrm_neweb civicrm_spgateway
