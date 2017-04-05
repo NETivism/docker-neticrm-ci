@@ -35,7 +35,8 @@ cd $BASE
 echo "Install Drupal ..."
 date +"@ %Y-%m-%d %H:%M:%S %z"
 sleep 5s
-php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --core=drupal-$DRUPAL --no-server --db-url=mysql://root:${PW}@127.0.0.1/neticrmci --account-pass=123456 --site-name=netiCRM --enable=transliteration neticrmci
+php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --core=drupal-$DRUPAL --no-server --db-url=mysql://${DB}:${PW}@127.0.0.1/${DB}--account-pass=123456 --site-name=netiCRM-CI --enable=transliteration neticrmci
+
 
 mv $BASE/neticrmci/drupal-${DRUPAL}/* $BASE/html/
 mv $BASE/neticrmci/drupal-${DRUPAL}/.htaccess $BASE/html/
