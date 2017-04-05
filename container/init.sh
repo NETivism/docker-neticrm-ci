@@ -7,8 +7,8 @@ BASE="/var/www"
 mkdir -p $BASE/www
 DRUPAL=$DRUPAL
 NETICRM=$NETICRM
-DB=neticrmci
-PW=123456
+DB="neticrmci"
+PW="123456"
 PORT=80
 
 echo "export TERM=xterm" >> /root/.bashrc
@@ -20,9 +20,6 @@ echo "CI for Drupal-$DRUPAL + netiCRM-$NETICRM"
 
 echo "Install new database $DB"
 mysql -uroot -e "CREATE DATABASE $DB CHARACTER SET utf8 COLLATE utf8_general_ci;"
-mysql -uroot -e "CREATE USER '$DB'@'%' IDENTIFIED BY '$PW';"
-mysql -uroot -e "GRANT ALL PRIVILEGES ON $DB.* TO '$DB'@'%' WITH GRANT OPTION;"
-mysql -uroot -e "FLUSH PRIVILEGES;"
 
 # phpunit
 echo "CiviCRM Unit Testing"
@@ -35,8 +32,7 @@ cd $BASE
 echo "Install Drupal ..."
 date +"@ %Y-%m-%d %H:%M:%S %z"
 sleep 5s
-php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --core=drupal-$DRUPAL --no-server --db-url=mysql://${DB}:${PW}@127.0.0.1/${DB}--account-pass=123456 --site-name=netiCRM-CI --enable=transliteration neticrmci
-
+php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --core=drupal-$DRUPAL --no-server --db-url=mysql://root:@127.0.0.1/$DB --account-pass=$PW --site-name=netiCRM-CI --enable=transliteration neticrmci
 
 mv $BASE/neticrmci/drupal-${DRUPAL}/* $BASE/html/
 mv $BASE/neticrmci/drupal-${DRUPAL}/.htaccess $BASE/html/
