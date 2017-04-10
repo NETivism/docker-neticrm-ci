@@ -1,4 +1,4 @@
-FROM netivism/docker-wheezy-php55
+FROM netivism/docker-wheezy-php55:fpm
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 ENV \
@@ -10,11 +10,8 @@ ENV \
 RUN \
   apt-get update && \
   apt-get install -y \
-    supervisor \
     net-tools \
     gawk && \
-  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-  composer global require drush/drush:6.5.0 && \
   composer global require phpunit/phpunit:4.6 && \
   composer global require phpunit/dbunit
 
