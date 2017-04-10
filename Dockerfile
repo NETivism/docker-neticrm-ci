@@ -1,4 +1,4 @@
-FROM netivism/docker-wheezy-php55:fpm
+FROM netivism/docker-jessie-php70
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 ENV \
@@ -11,9 +11,10 @@ RUN \
   apt-get update && \
   apt-get install -y \
     net-tools \
+    unzip \
     gawk && \
-  composer global require phpunit/phpunit:4.6 && \
-  composer global require phpunit/dbunit
+  composer global require phpunit/phpunit ">=4.8.28 <5" && \
+  composer global require phpunit/dbunit ">=2.0.3 <3"
 
 # casperjs
 RUN \
