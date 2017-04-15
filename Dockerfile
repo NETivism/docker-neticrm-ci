@@ -45,6 +45,7 @@ RUN \
   tar -zxf /tmp/simpletest.tar.gz -C /var/www/html/sites/all/modules/
 
 ADD container/init.sh /init.sh
+ADD container/mysql-init.sh /usr/local/bin/mysql-init.sh
 ADD container/my.cnf /etc/mysql/my.cnf
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD container/ansi2html.sh /usr/local/bin/ansi2html
