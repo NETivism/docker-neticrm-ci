@@ -1,4 +1,5 @@
 #!/bin/bash
+sleep 10
 while ! pgrep -u mysql mysqld > /dev/null; do sleep 3; done
 
 REPOSDIR=`pwd`
@@ -7,7 +8,7 @@ DRUPAL=$DRUPAL
 NETICRM=$NETICRM
 DB="neticrmci"
 PW="123456"
-RUNPORT=8080
+export RUNPORT=8080
 
 echo "export TERM=xterm" >> /root/.bashrc
 echo "export DRUPAL_ROOT=/var/www/html" >> /root/.bashrc
@@ -18,7 +19,6 @@ date +"@ %Y-%m-%d %H:%M:%S %z"
 echo "CI for Drupal-$DRUPAL + netiCRM-$NETICRM"
 
 echo "Install new database $DB"
-sleep 3
 mysql -uroot -e "CREATE DATABASE $DB CHARACTER SET utf8 COLLATE utf8_general_ci;"
 
 cd $DRUPAL_ROOT
