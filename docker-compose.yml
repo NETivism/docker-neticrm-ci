@@ -10,12 +10,18 @@ services:
       - ./drone:/var/lib/drone/
     restart: always
     environment:
-      - DRONE_OPEN=false
+      - DRONE_OPEN=true
       - DRONE_ORGS=${DRONE_ORGS}
       - DRONE_GITHUB=true
       - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
       - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
       - DRONE_SECRET=${DRONE_SECRET}
+      - PLUGIN_FROM=${email_from}
+      - EMAIL_HOST=${email_host}
+      - EMAIL_PORT=${email_port}
+      - EMAIL_USERNAME=${email_username}
+      - EMAIL_PASSWORD=${email_password}
+      - EMAIL_RECIPIENTS=${email_recipients}
 
   drone-agent:
     container_name: drone-client
