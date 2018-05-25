@@ -3,6 +3,7 @@ pipeline:
     image: netivism/neticrm-ci:drone
     commands:
       - /usr/bin/supervisord &
+      - echo "Success"
   notify:
     image: drillster/drone-email
     skip_verify: true
