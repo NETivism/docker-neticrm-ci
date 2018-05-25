@@ -3,11 +3,10 @@ pipeline:
     image: netivism/neticrm-ci:drone
     commands:
       - /usr/bin/supervisord &
-      - /init.sh
   notify:
     image: drillster/drone-email
     skip_verify: true
     from: noreply@mail.neticrm.tw
     secrets: [email_port, email_host, email_username, email_password, email_recipients]
     when:
-      status: [ changed, failure ]
+      status: [ changed, failure, success ]
