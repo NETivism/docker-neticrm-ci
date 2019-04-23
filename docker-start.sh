@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ "$#" -ne 2 ]; then
   echo "  $0 drupal-version neticrm-version"
-  echo "  $0 7.41 develop"
+  echo "  $0 7.66 develop"
   exit
 fi
 WORKDIR=`pwd`
