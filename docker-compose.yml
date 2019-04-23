@@ -2,36 +2,29 @@ version: '2'
 
 services:
   drone-server:
-    container_name: drone-server
-    image: drone/drone:0.6
+    image: drone/drone:0.8
     ports:
       - 8899:8000
+      - 9000:9000
     volumes:
       - ./drone:/var/lib/drone/
     restart: always
     environment:
       - DRONE_OPEN=true
-      - DRONE_ORGS=${DRONE_ORGS}
       - DRONE_GITHUB=true
-      - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
-      - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
-      - DRONE_SECRET=${DRONE_SECRET}
-      - PLUGIN_FROM=${email_from}
-      - EMAIL_HOST=${email_host}
-      - EMAIL_PORT=${email_port}
-      - EMAIL_USERNAME=${email_username}
-      - EMAIL_PASSWORD=${email_password}
-      - EMAIL_RECIPIENTS=${email_recipients}
+    env_file:
+      - drone/env
 
   drone-agent:
-    container_name: drone-client
-    image: drone/drone:0.6
-    image: drone/drone:0.6
+    image: drone/agent:0.8
+
     command: agent
     restart: always
-    depends_on: [ drone-server ]
+    depends_on:
+      - drone-server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DRONE_SERVER=ws://drone-server:8000/ws/broker
-      - DRONE_SECRET=${DRONE_SECRET}
+      - DRONE_SERVER=drone-server:9000
+    env_file:
+      - drone/env
