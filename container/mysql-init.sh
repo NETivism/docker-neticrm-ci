@@ -2,6 +2,12 @@
 set -eo pipefail
 
 # Get config
+if [ ! -d "/var/run/mysqld" ]; then
+  mkdir -p /var/run/mysqld
+  chown mysql:mysql /var/run/mysqld
+  echo "" > /var/www/html/log/mysql.log
+  chown mysql:mysql /var/www/html/log/mysql.log
+fi
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   mkdir -p "/var/lib/mysql"
