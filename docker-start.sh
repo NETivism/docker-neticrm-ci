@@ -1,9 +1,9 @@
 #!/bin/bash
 WORKDIR=`pwd`
 
-docker rm -f neticrm-ci
+docker rm -f neticrm-ci-php7
 docker run -d \
-  --name neticrm-ci \
+  --name neticrm-ci-php7 \
   -p 8888:8080 \
   -v /etc/localtime:/etc/localtime:ro \
   -v $WORKDIR/container/init.sh:/init.sh \
@@ -12,5 +12,5 @@ docker run -d \
   -e "RUNPORT=8080" \
   -e "DRUPAL_ROOT=/var/www/html" \
   -e "CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci" \
-  netivism/neticrm-ci:drone
-docker exec neticrm-ci /init.sh
+  netivism/neticrm-ci:drone-php7
+docker exec neticrm-ci-php7 /init.sh
