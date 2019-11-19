@@ -4,6 +4,11 @@ pipeline:
     commands:
       - /usr/bin/supervisord &
       - echo "Success"
+  build:
+    image: netivism/neticrm-ci:drone-php7
+    commands:
+      - /usr/bin/supervisord &
+      - echo "Success"
   notify:
     image: drillster/drone-email
     skip_verify: true
