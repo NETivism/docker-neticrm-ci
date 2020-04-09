@@ -49,7 +49,7 @@ if [ ! -f $DRUPAL_ROOT/sites/defaut/settings.php ]; then
   echo 'ini_set("error_reporting", E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);' >> $DRUPAL_ROOT/sites/default/settings.php
 fi
 
-drush runserver 127.0.0.1:$RUNPORT >& /dev/null &
+drush runserver 0.0.0.0:$RUNPORT >& /dev/null &
 until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do true; done
 
 # testing...
