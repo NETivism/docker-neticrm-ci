@@ -13,8 +13,8 @@ export RUNPORT=8080
 
 echo "export TERM=xterm" >> /root/.bashrc
 echo "export DRUPAL_ROOT=/var/www/html" >> /root/.bashrc
-echo "export CIVICRM_TEST_DSN=mysql://root@localhost/neticrmci" >> /root/.bashrc
-export CIVICRM_TEST_DSN=mysql://root@localhost/neticrmci
+echo "export CIVICRM_TEST_DSN=mysqli://root@localhost/neticrmci" >> /root/.bashrc
+export CIVICRM_TEST_DSN=mysqli://root@localhost/neticrmci
 
 date +"@ %Y-%m-%d %H:%M:%S %z"
 echo "CI for Drupal-$DRUPAL + netiCRM"
