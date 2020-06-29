@@ -11,6 +11,6 @@ docker run -d \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=8080" \
   -e "DRUPAL_ROOT=/var/www/html" \
-  -e "CIVICRM_TEST_DSN=mysql://root@localhost/neticrmci" \
+  -e "CIVICRM_TEST_DSN=mysqli://root@localhost/neticrmci" \
   netivism/neticrm-ci:drone-php7
 docker exec neticrm-ci-php7 /init.sh
