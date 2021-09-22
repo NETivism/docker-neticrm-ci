@@ -1,6 +1,6 @@
 pipeline:
   build:
-    image: netivism/neticrm-ci:drone
+    image: netivism/neticrm-ci:drone-php5
     commands:
       - /usr/bin/supervisord &
       - echo "Success"

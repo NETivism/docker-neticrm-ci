@@ -13,8 +13,8 @@ export RUNPORT=8080
 
 echo "export TERM=xterm" >> /root/.bashrc
 echo "export DRUPAL_ROOT=/var/www/html" >> /root/.bashrc
-echo "export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci" >> /root/.bashrc
-export CIVICRM_TEST_DSN=mysql://root@127.0.0.1/neticrmci
+echo "export CIVICRM_TEST_DSN=mysql://root@localhost/neticrmci" >> /root/.bashrc
+export CIVICRM_TEST_DSN=mysql://root@localhost/neticrmci
 
 date +"@ %Y-%m-%d %H:%M:%S %z"
 echo "CI for Drupal-$DRUPAL + netiCRM"
@@ -31,7 +31,7 @@ if [ ! -f $DRUPAL_ROOT/sites/defaut/settings.php ]; then
   echo "Install Drupal ..."
   date +"@ %Y-%m-%d %H:%M:%S %z"
   sleep 5s
-  php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes site-install standard --account-name=admin --db-url=mysql://root:@127.0.0.1/$DB --account-pass=$PW --site-name=netiCRM
+  php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes site-install standard --account-name=admin --db-url=mysql://root:@localhost/$DB --account-pass=$PW --site-name=netiCRM
 
   echo "Install netiCRM ..."
   ln -s $REPOSDIR $DRUPAL_ROOT/sites/all/modules/civicrm
@@ -49,7 +49,7 @@ if [ ! -f $DRUPAL_ROOT/sites/defaut/settings.php ]; then
   echo 'ini_set("error_reporting", E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);' >> $DRUPAL_ROOT/sites/default/settings.php
 fi
 
-drush runserver 0.0.0.0:$RUNPORT >& /dev/null &
+drush runserver --dns 127.0.0.1:$RUNPORT >& /dev/null &
 until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do true; done
 
 # testing...

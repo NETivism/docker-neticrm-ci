@@ -11,9 +11,12 @@ RUN \
   apt-get update && \
   apt-get install -y \
     net-tools \
-    php5-cgi \
-    gawk && \
-  composer global require phpunit/phpunit:4.6 && \
+    php5.6-cgi \
+    gawk
+
+RUN \
+  composer global require drush/drush:6.7.0 && \
+  composer global require phpunit/phpunit:4.8.36 && \
   composer global require phpunit/dbunit
 
 # casperjs
@@ -32,9 +35,9 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 RUN \
-  wget -q --no-check-certificate -O /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-7.72.tar.gz && \
+  wget -q --no-check-certificate -O /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-7.82.tar.gz && \
   tar -zxf /tmp/drupal.tar.gz -C /tmp && \
-  mv /tmp/drupal-7.72/* /var/www/html && \
+  mv /tmp/drupal-7.82/* /var/www/html && \
   mkdir -p /var/www/html/sites/all/modules && \
   mkdir -p /var/www/html/log/supervisor
 
@@ -46,10 +49,9 @@ RUN \
   tar -zxf /tmp/simpletest.tar.gz -C /var/www/html/sites/all/modules/
 
 ADD container/init.sh /init.sh
+ADD container/my.cnf /etc/mysql/mariadb.cnf
 ADD container/mysql-init.sh /usr/local/bin/mysql-init.sh
-ADD container/my.cnf /etc/mysql/my.cnf
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD container/ansi2html.sh /usr/local/bin/ansi2html
 
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]
