@@ -2,9 +2,9 @@ FROM netivism/docker-debian-php:develop
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 RUN \
-  wget -q --no-check-certificate -O /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-7.80.tar.gz && \
+  wget -q --no-check-certificate -O /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-7.82.tar.gz && \
   tar -zxf /tmp/drupal.tar.gz -C /tmp && \
-  mv /tmp/drupal-7.80/* /var/www/html && \
+  mv /tmp/drupal-7.82/* /var/www/html && \
   mkdir -p /var/www/html/sites/all/modules && \
   mkdir -p /var/www/html/log/supervisor
 
@@ -16,10 +16,12 @@ RUN \
   tar -zxf /tmp/simpletest.tar.gz -C /var/www/html/sites/all/modules/
 
 ADD container/init.sh /init.sh
+
+# we don't have mysql setup on vanilla image
 ADD container/my.cnf /etc/mysql/my.cnf
+
+# override supervisord to prevent conflict
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD container/ansi2html.sh /usr/local/bin/ansi2html
-ADD container/mysql-init.sh /usr/local/bin/mysql-init.sh
 
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]

@@ -1,7 +1,7 @@
 #!/bin/bash
 WORKDIR=`pwd`
 
-docker pull netivism/neticrm-ci:drone-php7
+#docker pull netivism/neticrm-ci:drone-php7
 docker rm -f neticrm-ci-php7
 docker run -d \
   --name neticrm-ci-php7 \
