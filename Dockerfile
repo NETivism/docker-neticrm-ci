@@ -15,9 +15,11 @@ RUN \
     gawk
 
 RUN \
-  composer global require drush/drush:6.7.0 && \
-  composer global require phpunit/phpunit:4.8.36 && \
-  composer global require phpunit/dbunit
+  composer global require drush/drush:8.3.0 && \
+  composer global require phpunit/phpunit:^5 && \
+  composer global require phpunit/dbunit && \
+  cd /root/.composer && \
+  composer clearcache
 
 # casperjs
 RUN \
