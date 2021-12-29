@@ -2,9 +2,9 @@ FROM netivism/docker-debian-php:develop
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 RUN \
-  wget -q --no-check-certificate -O /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-7.82.tar.gz && \
+  wget -q --no-check-certificate -O /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-7.84.tar.gz && \
   tar -zxf /tmp/drupal.tar.gz -C /tmp && \
-  mv /tmp/drupal-7.82/* /var/www/html && \
+  mv /tmp/drupal-7.84/* /var/www/html && \
   mkdir -p /var/www/html/sites/all/modules && \
   mkdir -p /var/www/html/log/supervisor
 
