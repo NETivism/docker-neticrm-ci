@@ -39,6 +39,7 @@ if [ ! -f $DRUPAL_ROOT/sites/defaut/settings.php ]; then
   drush --yes pm-enable transliteration simpletest
   drush --yes pm-enable civicrm
   drush --yes pm-enable civicrm_allpay civicrm_neweb civicrm_spgateway
+  drush --yes pm-enable neticrm_drush
   drush --yes variable-set civicrm_demo_sample_data 1
   drush --yes variable-set civicrm_demo_sample_data_ci 1
   drush --yes pm-enable civicrm_demo
