@@ -1,0 +1,23 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: neticrm ci php 7
+  image: netivism/neticrm-ci:drone-php7
+  environment:
+  - DRUPAL_ROOT=/var/www/html
+  commands:
+  - /usr/bin/supervisord &
+  - /init.sh
+  - ls $DRUPAL_ROOT
+
+- name: neticrm ci php 5
+  image: netivism/neticrm-ci:drone-php5
+  environment:
+  - DRUPAL_ROOT=/var/www/html
+  commands:
+  - /usr/bin/supervisord &
+  - /init.sh
+  - ls $DRUPAL_ROOT
