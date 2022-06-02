@@ -16,7 +16,7 @@ steps:
 - name: neticrm ci php 5
   image: netivism/neticrm-ci:drone-php5
   environment:
-  - DRUPAL_ROOT=/var/www/html
+    DRUPAL_ROOT=/var/www/html
   commands:
   - /usr/bin/supervisord &
   - /init.sh
