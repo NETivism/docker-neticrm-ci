@@ -27,7 +27,7 @@ fi
 
 cd $DRUPAL_ROOT
 
-if [ ! -f $DRUPAL_ROOT/sites/defaut/settings.php ]; then
+if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   echo "Install Drupal ..."
   date +"@ %Y-%m-%d %H:%M:%S %z"
   sleep 5s
