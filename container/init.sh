@@ -54,5 +54,14 @@ fi
 drush runserver 0.0.0.0:$RUNPORT >& /dev/null &
 until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do true; done
 
+# initialize playwright
+echo "Install playwright for testing project"
+if [ -d $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright ]; then
+  cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright && chown -R root:root .
+  npm install -D @playwright/test
+  cd $DRUPAL_ROOT
+fi
+
 # testing...
 echo "Running test..."
+

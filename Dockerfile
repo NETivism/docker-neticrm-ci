@@ -15,8 +15,6 @@ RUN \
   wget -q --no-check-certificate -O /tmp/simpletest.tar.gz https://ftp.drupal.org/files/projects/simpletest-7.x-2.1.tar.gz && \
   tar -zxf /tmp/simpletest.tar.gz -C /var/www/html/sites/all/modules/
 
-ADD container/init.sh /init.sh
-
 # we don't have mysql setup on vanilla image
 ADD container/my.cnf /etc/mysql/my.cnf
 
@@ -37,6 +35,8 @@ RUN \
   mkdir -p /tmp/playwright && cd /tmp/playwright && \
   npm install -g -D @playwright/test && \
   npx playwright install --with-deps chromium
+
+ADD container/init.sh /init.sh
 
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]
