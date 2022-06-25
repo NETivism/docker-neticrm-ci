@@ -23,5 +23,20 @@ ADD container/my.cnf /etc/mysql/my.cnf
 # override supervisord to prevent conflict
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# npm / nodejs
+RUN \
+  cd /tmp && \
+  curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+  apt-get install -y nodejs && \
+  curl https://www.npmjs.com/install.sh | sh && \
+  node -v && npm -v
+
+# playwright
+RUN \
+  sed -i 's/main$/main contrib non-free/g' /etc/apt/sources.list && apt-get update && \
+  mkdir -p /tmp/playwright && cd /tmp/playwright && \
+  npm install -g -D @playwright/test && \
+  npx playwright install --with-deps chromium
+
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]
