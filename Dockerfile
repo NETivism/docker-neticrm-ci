@@ -1,4 +1,4 @@
-FROM netivism/docker-debian-php:7.4
+FROM ghcr.io/netivism/docker-debian-php:8.0
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 ### ci tools
@@ -12,7 +12,7 @@ RUN \
 #phpunit
 RUN \
   mkdir -p /root/phpunit/extensions && \
-  wget -O /root/phpunit/phpunit https://phar.phpunit.de/phpunit-7.phar && \
+  wget -O /root/phpunit/phpunit https://phar.phpunit.de/phpunit-8.phar && \
   chmod +x /root/phpunit/phpunit && \
   wget -O /root/phpunit/extensions/dbunit.phar https://phar.phpunit.de/dbunit.phar && \
   chmod +x /root/phpunit/extensions/dbunit.phar && \
@@ -51,7 +51,7 @@ RUN \
 
 # cgi
 RUN \
-  apt-get install -y php7.4-cgi net-tools
+  apt-get install -y php8.0-cgi net-tools
 
 # purge
 RUN \
