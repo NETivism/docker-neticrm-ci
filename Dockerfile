@@ -6,6 +6,9 @@ ENV \
   PATH=$PATH:/root/phpunit \
   PHANTOMJS_VERSION=1.9.8
 
+RUN \
+  apt-get update
+
 #phpunit
 RUN \
   mkdir -p /root/phpunit/extensions && \
@@ -31,11 +34,6 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-RUN \
-  apt-get remove -y php7.4-dev gcc make autoconf libc-dev pkg-config php-pear && \
-  apt-get autoremove -y && \
-  apt-get clean && rm -rf /var/lib/apt/lists/*
-
 # npm / nodejs
 RUN \
   cd /tmp && \
@@ -50,6 +48,16 @@ RUN \
   mkdir -p /tmp/playwright && cd /tmp/playwright && \
   npm install -g -D @playwright/test && \
   npx playwright install --with-deps chromium
+
+# cgi
+RUN \
+  apt-get install -y php7.4-cgi net-tools
+
+# purge
+RUN \
+  apt-get remove -y gcc make autoconf libc-dev pkg-config php-pear && \
+  apt-get autoremove -y && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 ### drupal download
