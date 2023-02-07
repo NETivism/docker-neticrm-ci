@@ -1,20 +1,10 @@
 FROM netivism/docker-debian-php:7.4
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
-### develop tools
+### ci tools
 ENV \
   PATH=$PATH:/root/phpunit \
   PHANTOMJS_VERSION=1.9.8
-
-#xdebug
-RUN \
-  mkdir -p /var/www/html/log/xdebug && chown -R www-data:www-data /var/www/html/log/xdebug && \
-  apt-get update && \
-  apt-get install -y php7.4-cgi net-tools && \
-  pecl install xdebug-3.1.6 && \
-  bash -c "echo zend_extension=xdebug.so > /etc/php/7.4/mods-available/xdebug.ini" && \
-  bash -c "phpenmod xdebug" && \
-  cp -f /home/docker/php/develop.ini /etc/php/7.4/fpm/conf.d/x-develop.ini
 
 #phpunit
 RUN \
@@ -61,7 +51,8 @@ RUN \
   npm install -g -D @playwright/test && \
   npx playwright install --with-deps chromium
 
-### ci tools
+
+### drupal download
 COPY container/drupal-download.sh /tmp
 COPY container/drupalmodule-download.sh /tmp
 RUN \
