@@ -4,7 +4,7 @@ MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 ENV \
   COMPOSER_HOME=/root/.composer \
   PATH=/root/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-  PHANTOMJS_VERSION=1.9.7
+  PHANTOMJS_VERSION=1.9.8
 
 # composer
 RUN \
@@ -36,24 +36,24 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+### drupal download
+COPY container/drupal-download.sh /tmp
+COPY container/drupalmodule-download.sh /tmp
 RUN \
-  wget -q --no-check-certificate -O /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-7.90.tar.gz && \
-  tar -zxf /tmp/drupal.tar.gz -C /tmp && \
-  mv /tmp/drupal-7.90/* /var/www/html && \
+  chmod +x /tmp/drupal-download.sh && \
+  chmod +x /tmp/drupalmodule-download.sh
+
+RUN \
+  /tmp/drupal-download.sh 7 && \
   mkdir -p /var/www/html/sites/all/modules && \
-  mkdir -p /var/www/html/log/supervisor
+  /tmp/drupalmodule-download.sh 7 && \
+  mkdir -p /var/www/html/log/supervisor && \
+  mkdir -p /mnt/neticrm-7/civicrm
 
-RUN \
-  mkdir -p /mnt/neticrm-7/civicrm && \
-  wget -q --no-check-certificate -O /tmp/transliteration.tar.gz https://ftp.drupal.org/files/projects/transliteration-7.x-3.2.tar.gz && \
-  tar -zxf /tmp/transliteration.tar.gz -C /var/www/html/sites/all/modules/ && \
-  wget -q --no-check-certificate -O /tmp/simpletest.tar.gz https://ftp.drupal.org/files/projects/simpletest-7.x-2.1.tar.gz && \
-  tar -zxf /tmp/simpletest.tar.gz -C /var/www/html/sites/all/modules/
-
-ADD container/init.sh /init.sh
 ADD container/my.cnf /etc/mysql/mariadb.cnf
 ADD container/mysql-init.sh /usr/local/bin/mysql-init.sh
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD container/init.sh /init.sh
 
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]
