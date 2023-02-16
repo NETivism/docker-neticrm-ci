@@ -81,7 +81,7 @@ ADD container/my.cnf /etc/mysql/my.cnf
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # add initial script
-ADD container/init.sh /init.sh
+ADD container/init-7.sh /init.sh
 
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]
