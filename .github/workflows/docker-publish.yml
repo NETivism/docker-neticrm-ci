@@ -2,12 +2,13 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ['drone-php7','drone-php8','drone-php5']
+    branches: ['drone-php7','drone-php8']
   workflow_dispatch:
 
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '#skip-action') }}
     permissions:
       contents: read
       packages: write

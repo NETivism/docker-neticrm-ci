@@ -54,7 +54,7 @@ ADD container/my.cnf /etc/mysql/mariadb.cnf
 ADD container/mysql-init.sh /usr/local/bin/mysql-init.sh
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ADD container/init.sh /init.sh
+ADD container/init-7.sh /init.sh
 
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]
