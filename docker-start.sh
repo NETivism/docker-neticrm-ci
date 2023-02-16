@@ -15,10 +15,9 @@ else
   MOUNT=/mnt/neticrm-7/civicrm
 fi
 
-#docker pull netivism/neticrm-ci:drone-php7
-docker rm -f neticrm-ci-php7
+docker rm -f neticrm-ci-php8
 docker run -d \
-  --name neticrm-ci-php7 \
+  --name neticrm-ci-php8 \
   -p $1:8080 \
   -v /etc/localtime:/etc/localtime:ro \
   -v $WORKDIR/container/init.sh:/init.sh \
@@ -27,5 +26,5 @@ docker run -d \
   -e "RUNPORT=8080" \
   -e "DRUPAL_ROOT=/var/www/html" \
   -e "CIVICRM_TEST_DSN=mysqli://root@localhost/neticrmci" \
-  netivism/neticrm-ci:drone-php7
-docker exec neticrm-ci-php7 /init.sh
+  ghcr.io/netivism/docker-neticrm-ci:drone-php8
+docker exec neticrm-ci-php8 /init.sh
