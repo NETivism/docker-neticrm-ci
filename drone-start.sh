@@ -8,11 +8,11 @@ WORKDIR=`dirname $REALPATH`
 if [ -f "./drone/env" ]; then
   if [ -z "$EXISTS" ]; then
     cd $WORKDIR
-    docker-compose up -d
+    docker compose up -d
   else
-    docker-compose down
+    docker compose down
     sleep 3
-    docker-compose up -d
+    docker compose up -d
   fi;
 else
   echo "No environmental file in drone/env"
