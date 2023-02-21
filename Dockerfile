@@ -14,12 +14,13 @@ RUN \
     php5.6-cgi \
     gawk
 
+#phpunit
 RUN \
-  composer global require drush/drush:8.3.0 && \
-  composer global require phpunit/phpunit:^5 && \
-  composer global require phpunit/dbunit && \
-  cd /root/.composer && \
-  composer clearcache
+  mkdir -p /root/phpunit/extensions && \
+  wget -O /root/phpunit/phpunit https://phar.phpunit.de/phpunit-5.phar && \
+  chmod +x /root/phpunit/phpunit && \
+  cp /home/docker/php/phpunit.xml /root/phpunit/ && \
+  echo "alias phpunit='phpunit -c ~/phpunit/phpunit.xml'" > /root/.bashrc
 
 # casperjs
 RUN \
