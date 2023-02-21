@@ -3,7 +3,7 @@ MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 ENV \
   COMPOSER_HOME=/root/.composer \
-  PATH=/root/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+  PATH=/root/phpunit:/root/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
   PHANTOMJS_VERSION=1.9.8
 
 # composer
