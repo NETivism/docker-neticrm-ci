@@ -44,6 +44,7 @@ RUN \
 RUN \
   sed -i 's/main$/main contrib non-free/g' /etc/apt/sources.list && apt-get update && \
   mkdir -p /tmp/playwright && cd /tmp/playwright && \
+  npm install -g -D dotenv && \
   npm install -g -D @playwright/test && \
   npx playwright install --with-deps chromium
 

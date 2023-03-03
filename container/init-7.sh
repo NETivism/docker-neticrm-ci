@@ -59,6 +59,7 @@ echo "Link playwright for testing project"
 if [ -d $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright ]; then
   cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright 
   npm link @playwright/test
+  npm link dotenv
   cd $DRUPAL_ROOT
 fi
 
