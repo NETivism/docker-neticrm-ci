@@ -9,19 +9,19 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-CONTAINER_NAME=neticrm-ci-php7
-TAG_NAME=drone-php7
-DRUPAL_VERSION=7
+CONTAINER_NAME=neticrm-ci-php7-d9
+TAG_NAME=drone-php7-d9
+DRUPAL_VERSION=9
 
 WORKDIR=`pwd`
-if [ -d $HOME/mnt/neticrm-7/civicrm ];then
-  MOUNT=$HOME/mnt/neticrm-7/civicrm
+if [ -d $HOME/mnt/neticrm-9/civicrm ];then
+  MOUNT=$HOME/mnt/neticrm-9/civicrm
 else
-  MOUNT=/mnt/neticrm-7/civicrm
+  MOUNT=/mnt/neticrm-9/civicrm
 fi
 
 # always fetch latest image
-docker pull ghcr.io/netivism/docker-neticrm-ci:$TAG_NAME
+#docker pull ghcr.io/netivism/docker-neticrm-ci:$TAG_NAME
 
 # purge previous container
 EXISTS_CONTAINER=$(docker ps -q -f "name=$CONTAINER_NAME")
@@ -42,13 +42,15 @@ docker run -d \
   -p $1:8080 \
   -v /etc/localtime:/etc/localtime:ro \
   -v $WORKDIR/container/init-$DRUPAL_VERSION.sh:/init.sh \
-  -v $MOUNT:/mnt/neticrm-7/civicrm \
+  -v $MOUNT:/mnt/neticrm-9/civicrm \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=8080" \
   -e "DRUPAL_ROOT=/var/www/html" \
   -e "CIVICRM_TEST_DSN=mysqli://root@localhost/neticrmci" \
   -e "DRUPAL=$DRUPAL_VERSION" \
-  ghcr.io/netivism/docker-neticrm-ci:$TAG_NAME
+  netivism/docker-neticrm-ci:$TAG_NAME
+  
+#ghcr.io/netivism/docker-neticrm-ci:$TAG_NAME
 
 # install drupal
 docker exec $CONTAINER_NAME /init.sh

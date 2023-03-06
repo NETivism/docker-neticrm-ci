@@ -67,11 +67,15 @@ RUN \
   chmod +x /tmp/drupalmodule-download.sh
 
 RUN \
-  /tmp/drupal-download.sh 7 && \
+  /tmp/drupal-download.sh 9 && \
   mkdir -p /var/www/html/sites/all/modules && \
-  /tmp/drupalmodule-download.sh 7 && \
+  /tmp/drupalmodule-download.sh 9 && \
   mkdir -p /var/www/html/log/supervisor && \
-  mkdir -p /mnt/neticrm-7/civicrm
+  mkdir -p /mnt/neticrm-9/civicrm
+
+### Add drupal 9 related drush
+RUN \
+  cd /var/www/html && composer require drush/drush
 
 # we don't have mysql setup on vanilla image
 ADD container/my.cnf /etc/mysql/my.cnf
@@ -80,7 +84,7 @@ ADD container/my.cnf /etc/mysql/my.cnf
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # add initial script
-ADD container/init-7.sh /init.sh
+ADD container/init-9.sh /init.sh
 
-WORKDIR /mnt/neticrm-7/civicrm
+WORKDIR /mnt/neticrm-9/civicrm
 CMD ["/usr/bin/supervisord"]
