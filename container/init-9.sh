@@ -37,7 +37,8 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
     echo 'date_default_timezone_set("Asia/Taipei");' >> $DRUPAL_ROOT/sites/default/settings.php
     echo 'ini_set("error_reporting", E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);' >> $DRUPAL_ROOT/sites/default/settings.php
     echo "\$base_url='';" >> $DRUPAL_ROOT/sites/default/settings.php
-    echo "\$settings['civicrm_demo.sample_data'] = TRUE;" >> $DRUPAL_ROOT/sites/default/settings.php
+    echo "\$settings['civicrm_demo.sample_data_ci'] = TRUE;" >> $DRUPAL_ROOT/sites/default/settings.php
+    echo "\$config['system.performance']['js']['preprocess'] = FALSE;" >> $DRUPAL_ROOT/sites/default/settings.php
   fi
 
   echo "Install netiCRM ..."
@@ -48,6 +49,8 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   drush --yes pm:install neticrm_drush
   drush --yes pm:install civicrm_demo
 
+  drush role-add-perm anonymous 'profile create'
+  drush role-add-perm authenticated 'profile create,profile edit'
   chown -R www-data /var/www/html/sites/default/files
 fi
 
