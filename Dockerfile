@@ -1,4 +1,4 @@
-FROM netivism/docker-wheezy-php55:fpm
+FROM ghcr.io/netivism/docker-wheezy-php55:fpm
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 ENV \
