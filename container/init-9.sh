@@ -49,8 +49,15 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   drush --yes pm:install neticrm_drush
   drush --yes pm:install civicrm_demo
 
+  # add permission for unit testing
   drush role-add-perm anonymous 'profile create'
   drush role-add-perm authenticated 'profile create,profile edit'
+
+  # add user login block to front page
+  mkdir /tmp/config
+  printf "langcode: en\nstatus: true\ndependencies:\n  module:\n    - user\n  theme:\n    - olivero\nid: userlogin\ntheme: olivero\nregion: sidebar\nweight: 0\nprovider: null\nplugin: user_login_block\nsettings:\n  id: user_login_block\n  label: 'User login'\n  label_display: visible\n  provider: user\nvisibility: {  }" > /tmp/config/block.block.userlogin.yml
+  drush --yes config:import --source=/tmp/config --partial
+
   chown -R www-data /var/www/html/sites/default/files
 fi
 
