@@ -60,6 +60,9 @@ if [ -d $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright ]; then
   cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright 
   npm link @playwright/test
   npm link dotenv
+
+  # install latest chromium
+  npx playwright install --with-deps chromium
   cd $DRUPAL_ROOT
 fi
 
