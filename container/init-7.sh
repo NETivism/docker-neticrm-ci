@@ -60,6 +60,8 @@ if [ -d $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright ]; then
   cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright 
   npm link @playwright/test
   npm link dotenv
+  pwd
+  echo -e "# .env file\nlocalUrl=http://127.0.0.1:$RUNPORT/\nadminUser=admin\nadminPwd=123456" >> $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright/setup.env
 
   # install latest chromium
   npx playwright install --with-deps chromium
