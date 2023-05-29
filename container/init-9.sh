@@ -48,7 +48,6 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   drush --yes pm:install civicrm_allpay 
   drush --yes pm:install neticrm_drush
   drush --yes pm:install civicrm_demo
-  drush --yes neticrm:config-set debug 1
 
   # add permission for unit testing
   drush role-add-perm anonymous 'profile create'
