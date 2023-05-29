@@ -2,7 +2,7 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ['drone-php7','drone-php8']
+    branches: ['drone-php5','drone-php7','drone-php8','drone-php7-d9','drone-php8-d9']
   workflow_dispatch:
 
 jobs:
