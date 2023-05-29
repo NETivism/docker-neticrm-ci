@@ -67,7 +67,7 @@ RUN \
   chmod +x /tmp/drupalmodule-download.sh
 
 RUN \
-  /tmp/drupal-download.sh 9 && \
+  /tmp/drupal-download.sh 9.5 && \
   mkdir -p /var/www/html/sites/all/modules && \
   /tmp/drupalmodule-download.sh 9 && \
   mkdir -p /var/www/html/log/supervisor && \
@@ -75,7 +75,7 @@ RUN \
 
 ### Add drupal 9 related drush
 RUN \
-  cd /var/www/html && composer require drush/drush
+  cd /var/www/html && composer update && composer require drush/drush
 
 # we don't have mysql setup on vanilla image
 ADD container/my.cnf /etc/mysql/my.cnf
