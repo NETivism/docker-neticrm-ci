@@ -4,7 +4,7 @@ while ! pgrep -u mysql mysqld > /dev/null; do sleep 3; done
 
 REPOSDIR=`pwd`
 if [ ! -f $REPOSDIR/civicrm-version.txt ]; then
-  REPOSDIR='/mnt/neticrm-9/civicrm'
+  REPOSDIR='/mnt/neticrm-10/civicrm'
 fi
 export DRUPAL_ROOT=/var/www/html
 DB="neticrmci"
@@ -44,14 +44,15 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   echo "Install netiCRM ..."
   ln -s $REPOSDIR $DRUPAL_ROOT/modules/civicrm
   cd $DRUPAL_ROOT
-  drush --yes pm:install civicrm
-  drush --yes pm:install civicrm_allpay 
-  drush --yes pm:install neticrm_drush
-  drush --yes pm:install civicrm_demo
+
+  #drush --yes pm:install civicrm
+  #drush --yes pm:install civicrm_allpay 
+  #drush --yes pm:install neticrm_drush
+  #drush --yes pm:install civicrm_demo
 
   # add permission for unit testing
-  drush role-add-perm anonymous 'profile create'
-  drush role-add-perm authenticated 'profile create,profile edit'
+  #drush role-add-perm anonymous 'profile create'
+  #drush role-add-perm authenticated 'profile create,profile edit'
 
   # add user login block to front page
   mkdir /tmp/config

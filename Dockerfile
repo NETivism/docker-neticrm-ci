@@ -1,4 +1,4 @@
-FROM ghcr.io/netivism/docker-debian-php:8.0
+FROM ghcr.io/netivism/docker-debian-php:8.1
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 ### ci tools
@@ -12,7 +12,7 @@ RUN \
 #phpunit
 RUN \
   mkdir -p /root/phpunit/extensions && \
-  wget -O /root/phpunit/phpunit https://phar.phpunit.de/phpunit-8.phar && \
+  wget -O /root/phpunit/phpunit https://phar.phpunit.de/phpunit-10.phar && \
   chmod +x /root/phpunit/phpunit && \
   cp /home/docker/php/phpunit.xml /root/phpunit/ && \
   echo "alias phpunit='phpunit -c ~/phpunit/phpunit.xml'" > /root/.bashrc
@@ -50,7 +50,7 @@ RUN \
 
 # cgi
 RUN \
-  apt-get install -y php8.0-cgi net-tools
+  apt-get install -y php8.1-cgi net-tools
 
 # purge
 RUN \
@@ -67,11 +67,11 @@ RUN \
   chmod +x /tmp/drupalmodule-download.sh
 
 RUN \
-  /tmp/drupal-download.sh 9.5 && \
+  /tmp/drupal-download.sh 10.0 && \
   mkdir -p /var/www/html/sites/all/modules && \
-  /tmp/drupalmodule-download.sh 9 && \
+  /tmp/drupalmodule-download.sh 10 && \
   mkdir -p /var/www/html/log/supervisor && \
-  mkdir -p /mnt/neticrm-9/civicrm
+  mkdir -p /mnt/neticrm-10/civicrm
 
 ### Add drupal 9 related drush
 RUN \
@@ -84,7 +84,7 @@ ADD container/my.cnf /etc/mysql/my.cnf
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # add initial script
-ADD container/init-9.sh /init.sh
+ADD container/init-10.sh /init.sh
 
-WORKDIR /mnt/neticrm-9/civicrm
+WORKDIR /mnt/neticrm-10/civicrm
 CMD ["/usr/bin/supervisord"]

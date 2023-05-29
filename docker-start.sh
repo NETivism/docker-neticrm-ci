@@ -9,15 +9,15 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-CONTAINER_NAME=neticrm-ci-php8-d9
-TAG_NAME=drone-php8-d9
-DRUPAL_VERSION=9
+CONTAINER_NAME=neticrm-ci-php8-d10
+TAG_NAME=drone-php8-d10
+DRUPAL_VERSION=10
 
 WORKDIR=`pwd`
-if [ -d $HOME/mnt/neticrm-9/civicrm ];then
-  MOUNT=$HOME/mnt/neticrm-9/civicrm
+if [ -d $HOME/mnt/neticrm-10/civicrm ];then
+  MOUNT=$HOME/mnt/neticrm-10/civicrm
 else
-  MOUNT=/mnt/neticrm-9/civicrm
+  MOUNT=/mnt/neticrm-10/civicrm
 fi
 
 # always fetch latest image
@@ -42,7 +42,7 @@ docker run -d \
   -p $1:8080 \
   -v /etc/localtime:/etc/localtime:ro \
   -v $WORKDIR/container/init-$DRUPAL_VERSION.sh:/init.sh \
-  -v $MOUNT:/mnt/neticrm-9/civicrm \
+  -v $MOUNT:/mnt/neticrm-10/civicrm \
   -e "TZ=Asia/Taipei" \
   -e "RUNPORT=8080" \
   -e "DRUPAL_ROOT=/var/www/html" \
