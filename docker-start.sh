@@ -21,7 +21,7 @@ else
 fi
 
 # always fetch latest image
-#docker pull ghcr.io/netivism/docker-neticrm-ci:$TAG_NAME
+docker pull rg.netivism.com.tw/netivism/docker-neticrm-ci:$TAG_NAME
 
 # purge previous container
 EXISTS_CONTAINER=$(docker ps -q -f "name=$CONTAINER_NAME")
@@ -31,9 +31,9 @@ if [ -n $EXISTS_CONTAINER ]; then
 fi
 
 # purge previous images
-OLD_IMAGE=$(docker images ghcr.io/netivism/docker-neticrm-ci --filter "dangling=true" -q)
+OLD_IMAGE=$(docker images rg.netivism.com.tw/netivism/docker-neticrm-ci --filter "dangling=true" -q)
 if [ -n "$OLD_IMAGE" ]; then
-  docker rmi $(docker images ghcr.io/netivism/docker-neticrm-ci --filter "dangling=true" -q)
+  docker rmi $(docker images rg.netivism.com.tw/netivism/docker-neticrm-ci --filter "dangling=true" -q)
 fi
 
 # start container
@@ -48,9 +48,8 @@ docker run -d \
   -e "DRUPAL_ROOT=/var/www/html" \
   -e "CIVICRM_TEST_DSN=mysqli://root@localhost/neticrmci" \
   -e "DRUPAL=$DRUPAL_VERSION" \
-  netivism/docker-neticrm-ci:$TAG_NAME
+  rg.netivism.com.tw/netivism/docker-neticrm-ci:$TAG_NAME
   
-#ghcr.io/netivism/docker-neticrm-ci:$TAG_NAME
 
 # install drupal
 docker exec $CONTAINER_NAME /init.sh
