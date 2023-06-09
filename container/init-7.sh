@@ -57,9 +57,10 @@ until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do true; done
 # initialize playwright
 echo "Link playwright for testing project"
 if [ -d $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright ]; then
-  cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright 
+  cd $DRUPAL_ROOT/sites/all/modules/civicrm/tests/playwright
   npm link @playwright/test
   npm link dotenv
+  echo -e "# .env file\nlocalUrl=http://127.0.0.1:$RUNPORT/\nadminUser=admin\nadminPwd=123456" > setup.env
   cd $DRUPAL_ROOT
 fi
 
