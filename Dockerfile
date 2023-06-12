@@ -73,7 +73,7 @@ RUN \
   mkdir -p /var/www/html/log/supervisor && \
   mkdir -p /mnt/neticrm-10/civicrm
 
-### Add drupal 9 related drush
+### Add drupal 10 related drush
 RUN \
   cd /var/www/html && composer update && composer require drush/drush
 

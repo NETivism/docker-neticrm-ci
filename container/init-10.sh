@@ -28,6 +28,7 @@ fi
 cd $DRUPAL_ROOT
 
 if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
+  cd /var/www/html && composer require drush/drush
   echo "Install Drupal ..."
   date +"@ %Y-%m-%d %H:%M:%S %z"
   sleep 5s
@@ -71,6 +72,8 @@ if [ -d $DRUPAL_ROOT/modules/civicrm/tests/playwright ]; then
   cd $DRUPAL_ROOT/modules/civicrm/tests/playwright 
   npm link @playwright/test
   npm link dotenv
+  pwd
+  echo -e "# .env file\nlocalUrl=http://127.0.0.1:$RUNPORT/\nadminUser=admin\nadminPwd=123456" >> $DRUPAL_ROOT/modules/civicrm/tests/playwright/setup.env
 
   npx playwright install --with-deps chromium
   cd $DRUPAL_ROOT
