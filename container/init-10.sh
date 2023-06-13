@@ -58,6 +58,7 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   # add user login block to front page
   mkdir /tmp/config
   printf "langcode: en\nstatus: true\ndependencies:\n  module:\n    - user\n  theme:\n    - olivero\nid: userlogin\ntheme: olivero\nregion: sidebar\nweight: 0\nprovider: null\nplugin: user_login_block\nsettings:\n  id: user_login_block\n  label: 'User login'\n  label_display: visible\n  provider: user\nvisibility: {  }" > /tmp/config/block.block.userlogin.yml
+  printf "langcode: en\nstatus: true\ndependencies:\n  module:\n    - image\n    - user\nid: user.user.default\ntargetEntityType: user\nbundle: user\nmode: default\ncontent:\n  member_for:\n    settings: {  }\n    third_party_settings: {  }\n    weight: 1\n    region: content\n  user_picture:\n    type: image\n    label: hidden\n    settings:\n      image_link: content\n      image_style: thumbnail\n      image_loading:\n        attribute: lazy\n    third_party_settings: {  }\n    weight: 0\n    region: content\n  civicrm_dashboard:\n    settings: {  }\n    third_party_settings: {  }\n    weight: 3\n    region: content\n  civicrm_profiles:\n    settings: {  }\n    third_party_settings: {  }\n    weight: 4\n    region: content\n  civicrm_record:\n    settings: {  }\n    third_party_settings: {  }\n    weight: 2\n    region: content\nhidden:\n\n" > /tmp/config/core.entity_view_display.user.user.default.yml
   drush --yes config:import --source=/tmp/config --partial
 
   chown -R www-data /var/www/html/sites/default/files
