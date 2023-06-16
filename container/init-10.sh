@@ -47,13 +47,13 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   cd $DRUPAL_ROOT
 
   drush --yes pm:install civicrm
-  drush --yes pm:install civicrm_allpay 
+  drush --yes pm:install civicrm_allpay
   drush --yes pm:install neticrm_drush
   drush --yes pm:install civicrm_demo
 
   # add permission for unit testing
-  drush role-add-perm anonymous 'profile create'
-  drush role-add-perm authenticated 'profile create,profile edit'
+  drush role-add-perm anonymous 'profile create,register for events,access CiviMail subscribe/unsubscribe pages,access all custom data,view event info,view public CiviMail content,make online contributions'
+  drush role-add-perm authenticated 'profile create,register for events,access CiviMail subscribe/unsubscribe pages,access all custom data,view event info,view public CiviMail content,make online contributions,profile edit'
 
   # add user login block to front page
   mkdir /tmp/config
