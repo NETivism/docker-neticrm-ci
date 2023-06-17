@@ -45,6 +45,9 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   drush --yes pm-enable civicrm_demo
   drush --yes variable-set error_level 0
 
+  drush role-add-perm 1 'profile create,register for events,access CiviMail subscribe/unsubscribe pages,access all custom data,view event info,view public CiviMail content,make online contributions'
+  drush role-add-perm 2 'profile create,register for events,access CiviMail subscribe/unsubscribe pages,access all custom data,view event info,view public CiviMail content,make online contributions,profile edit'
+
   chown -R www-data /var/www/html/sites/default/files
   echo 'date_default_timezone_set("Asia/Taipei");' >> $DRUPAL_ROOT/sites/default/settings.php
   echo 'ini_set("error_reporting", E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);' >> $DRUPAL_ROOT/sites/default/settings.php
