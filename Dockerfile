@@ -67,7 +67,7 @@ RUN \
   chmod +x /tmp/drupalmodule-download.sh
 
 RUN \
-  /tmp/drupal-download.sh 10.0 && \
+  /tmp/drupal-download.sh 10 && \
   mkdir -p /var/www/html/sites/all/modules && \
   /tmp/drupalmodule-download.sh 10 && \
   mkdir -p /var/www/html/log/supervisor && \
