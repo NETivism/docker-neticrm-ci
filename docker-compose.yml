@@ -23,7 +23,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DRONE_RUNNER_CAPACITY=1
+      - DRONE_RUNNER_CAPACITY=2
       - DRONE_RUNNER_NAME=drone-runner-docker
       - DRONE_RPC_HOST=drone-server
       - DRONE_RPC_PROTO=http
