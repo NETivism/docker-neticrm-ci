@@ -6,6 +6,8 @@ REPOSDIR=`pwd`
 if [ ! -f $REPOSDIR/civicrm-version.txt ]; then
   REPOSDIR='/mnt/neticrm-10/civicrm'
 fi
+
+export DRUPAL=10
 export DRUPAL_ROOT=/var/www/html
 DB="neticrmci"
 PW="123456"
