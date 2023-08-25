@@ -1,4 +1,4 @@
-FROM ghcr.io/netivism/docker-debian-php:8.0
+FROM ghcr.io/netivism/docker-debian-php:8.1
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
 ### ci tools
