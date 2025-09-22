@@ -32,14 +32,20 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-# npm / nodejs / playwright
+ENV NODE_VERSION=20.19.5
+ENV NVM_DIR /usr/local/nvm
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
 RUN \
   sed -i 's/main$/main contrib non-free/g' /etc/apt/sources.list && apt-get update && \
   cd /tmp && \
   mkdir -p /tmp/playwright && cd /tmp/playwright && \
+  mkdir -p $NVM_DIR && \
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
-  \. "$HOME/.nvm/nvm.sh" && \
-  nvm install 20 && \
+  \. "$NVM_DIR/nvm.sh" && \
+  nvm install $NODE_VERSION && \
+  nvm alias default $NODE_VERSION && \
+  nvm use default && \
   node -v && npm -v && \
   npm install -g -D dotenv && \
   npm install -g -D @playwright/test && \
