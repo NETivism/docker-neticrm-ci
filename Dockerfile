@@ -17,18 +17,22 @@ RUN \
   cp /home/docker/php/phpunit.xml /root/phpunit/ && \
   echo "alias phpunit='phpunit -c ~/phpunit/phpunit.xml'" > /root/.bashrc
 
-# npm / nodejs
-RUN \
-  cd /tmp && \
-  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-  apt-get install -y nodejs && \
-  curl https://www.npmjs.com/install.sh | sh && \
-  node -v && npm -v
+# node and nvm for playwright
+ENV NODE_VERSION=20.19.5
+ENV NVM_DIR /usr/local/nvm
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-# playwright
 RUN \
   sed -i 's/main$/main contrib non-free/g' /etc/apt/sources.list && apt-get update && \
+  cd /tmp && \
   mkdir -p /tmp/playwright && cd /tmp/playwright && \
+  mkdir -p $NVM_DIR && \
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+  \. "$NVM_DIR/nvm.sh" && \
+  nvm install $NODE_VERSION && \
+  nvm alias default $NODE_VERSION && \
+  nvm use default && \
+  node -v && npm -v && \
   npm install -g -D dotenv && \
   npm install -g -D @playwright/test && \
   npx playwright install --with-deps chromium
