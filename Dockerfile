@@ -32,18 +32,15 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-# npm / nodejs
-RUN \
-  cd /tmp && \
-  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-  apt-get install -y nodejs && \
-  curl https://www.npmjs.com/install.sh | sh && \
-  node -v && npm -v
-
-# playwright
+# npm / nodejs / playwright
 RUN \
   sed -i 's/main$/main contrib non-free/g' /etc/apt/sources.list && apt-get update && \
+  cd /tmp && \
   mkdir -p /tmp/playwright && cd /tmp/playwright && \
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+  \. "$HOME/.nvm/nvm.sh" && \
+  nvm install 20 && \
+  node -v && npm -v && \
   npm install -g -D dotenv && \
   npm install -g -D @playwright/test && \
   npx playwright install --with-deps chromium
