@@ -32,6 +32,7 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+# node and nvm for playwright
 ENV NODE_VERSION=20.19.5
 ENV NVM_DIR /usr/local/nvm
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
