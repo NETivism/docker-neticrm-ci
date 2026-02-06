@@ -1,6 +1,9 @@
 #!/bin/bash
-sleep 10
+date +"@ %Y-%m-%d %H:%M:%S %z"
+
+# wait for mysql start
 while ! pgrep -u mysql mysqld > /dev/null; do sleep 3; done
+sleep 10
 
 REPOSDIR=`pwd`
 if [ ! -f $REPOSDIR/civicrm-version.txt ]; then
@@ -20,17 +23,31 @@ export DRUPAL=7
 date +"@ %Y-%m-%d %H:%M:%S %z"
 echo "CI for Drupal-$DRUPAL + netiCRM"
 
-EXISTSDB=`mysql -uroot -e "SHOW DATABASES" | grep neticrmci | wc -l`
-if [ "$EXISTSDB" = "0" ]; then
+# correct drush installation
+## update composer
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+composer global remove drush/drush
+composer global require drush/drush:8.5.0 --no-security-blocking --no-audit
+
+# init mysql
+DB_TEST=`mysql -uroot -sN -e "SHOW databases"`
+MYSQL_ACCESS=$?
+DB_EXISTS=`mysql -uroot -sN -e "SHOW databases" | grep $DB`
+
+if [ $MYSQL_ACCESS -eq 0 ] && [ -z "$DB_EXISTS" ] && [ -n "$DB" ]; then
   echo "Install new database $DB"
   mysql -uroot -e "CREATE DATABASE $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+  echo "MySQL initialize completed !!"
+  echo "MYSQL_DB=$DB"
+else
+  echo "Skip exist $DB, database already setup before."
 fi
 
 cd $DRUPAL_ROOT
 
 if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
-  echo "Install Drupal ..."
   date +"@ %Y-%m-%d %H:%M:%S %z"
+  echo "Install Drupal ..."
   sleep 5s
   php ~/.composer/vendor/bin/drush.php --yes site-install standard --account-name=admin --db-url=mysql://root:@localhost/$DB --account-pass=$PW --site-name=netiCRM
 
@@ -74,4 +91,5 @@ fi
 
 # testing...
 echo "Running test..."
+date +"@ %Y-%m-%d %H:%M:%S %z"
 
