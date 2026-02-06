@@ -32,7 +32,13 @@ cd $DRUPAL_ROOT
 if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   cd /var/www/html
   composer update "drupal/core-*" --with-all-dependencies
-  composer global require drush/drush:dev-master --with-all-dependencies
+
+  # correct drush installation
+  composer require drush/drush
+
+  # add drush to PATH for current script execution
+  export PATH="/var/www/html/vendor/bin:$PATH"
+
   echo "Install Drupal ..."
   date +"@ %Y-%m-%d %H:%M:%S %z"
   sleep 5s
