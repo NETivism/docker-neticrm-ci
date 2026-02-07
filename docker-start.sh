@@ -9,8 +9,8 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-CONTAINER_NAME=neticrm-ci-php8-d10
-TAG_NAME=drone-php8-d10
+CONTAINER_NAME=neticrm-ci-php83-d10
+TAG_NAME=drone-php83-d10
 DRUPAL_VERSION=10
 
 WORKDIR=`pwd`
