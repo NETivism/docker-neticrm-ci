@@ -43,6 +43,8 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
 
   # add drush to PATH for current script execution
   export PATH="/var/www/html/vendor/bin:$PATH"
+  cd /usr/local/bin && ln -s /var/www/html/vendor/bin/drush drush
+  cd /var/www/html
 
   echo "Install Drupal ..."
   date +"@ %Y-%m-%d %H:%M:%S %z"
