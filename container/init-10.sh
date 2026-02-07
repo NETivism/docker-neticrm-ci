@@ -36,6 +36,11 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   # correct drush installation
   composer require drush/drush
 
+  # add drush to PATH in bash.bashrc for future sessions
+  if ! grep -q "/var/www/html/vendor/bin" /etc/bash.bashrc; then
+    echo 'export PATH="/var/www/html/vendor/bin:$PATH"' >> /etc/bash.bashrc
+  fi
+
   # add drush to PATH for current script execution
   export PATH="/var/www/html/vendor/bin:$PATH"
 
