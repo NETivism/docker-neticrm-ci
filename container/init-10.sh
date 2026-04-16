@@ -63,6 +63,8 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   ln -s $REPOSDIR $DRUPAL_ROOT/modules/civicrm
   cd $DRUPAL_ROOT
 
+  drush --yes cc drush
+  drush --yes cr
   drush --yes pm:install civicrm
   drush --yes pm:install civicrm_allpay
   drush --yes pm:install civicrm_spgateway
