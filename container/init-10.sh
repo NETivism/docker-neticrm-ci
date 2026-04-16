@@ -82,8 +82,8 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   chown -R www-data /var/www/html/sites/default/files
 fi
 
-drush runserver 0.0.0.0:$RUNPORT >& /dev/null &
-until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do true; done
+# wait for drupal runserver (managed by supervisord)
+until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do sleep 2; done
 
 # initialize playwright
 echo "Link playwright for testing project"

@@ -23,9 +23,9 @@ fi
 # always fetch latest image
 docker pull rg.netivism.com.tw/netivism/docker-neticrm-ci:$TAG_NAME
 
-# purge previous container
-EXISTS_CONTAINER=$(docker ps -q -f "name=$CONTAINER_NAME")
-if [ -n $EXISTS_CONTAINER ]; then
+# purge previous container (including stopped ones)
+EXISTS_CONTAINER=$(docker ps -aq -f "name=$CONTAINER_NAME")
+if [ -n "$EXISTS_CONTAINER" ]; then
   docker rm -f $CONTAINER_NAME
   echo "Remove old container $CONTAINER_NAME successfully"
 fi
