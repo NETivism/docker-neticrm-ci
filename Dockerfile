@@ -93,6 +93,7 @@ RUN \
   nvm install $NODE_VERSION && \
   nvm alias default $NODE_VERSION && \
   nvm use default && \
+  ln -sfn "$NVM_DIR/versions/node/$(node -v)" "$NVM_DIR/versions/node/v$NODE_VERSION" && \
   node -v && npm -v && \
   npm install -g -D dotenv && \
   npm install -g -D @playwright/test && \
