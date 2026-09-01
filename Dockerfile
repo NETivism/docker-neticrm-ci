@@ -139,6 +139,7 @@ RUN \
   cd /var/www/html && composer update && composer require drush/drush
 
 # we don't have mysql setup on vanilla image
+COPY container/mysql-init.sh /usr/local/bin/mysql-init.sh
 ADD container/my.cnf /etc/mysql/my.cnf
 
 # override supervisord to prevent conflict
