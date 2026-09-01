@@ -8,7 +8,7 @@ ENV \
 # basic packages install
 RUN \
     apt-get update && \
-    apt-get install -y rsyslog apt-transport-https wget gnupg gcc make autoconf libc-dev pkg-config google-perftools qpdf curl vim git-core supervisor procps
+    apt-get install -y rsyslog apt-transport-https wget gnupg google-perftools qpdf curl vim git-core supervisor procps net-tools
 
 # add PHP sury
 WORKDIR /etc/apt/sources.list.d
@@ -33,6 +33,8 @@ RUN \
   apt-get update && \
   apt-get install -y \
     php8.3 \
+    php8.3-cgi \
+    php8.3-cli \
     php8.3-curl \
     php8.3-imap \
     php8.3-gd \
@@ -40,8 +42,6 @@ RUN \
     php8.3-mbstring \
     php8.3-xml \
     php8.3-memcached \
-    php8.3-cli \
-    php8.3-fpm \
     php8.3-zip \
     php8.3-bz2 \
     php8.3-ssh2 \
@@ -52,23 +52,6 @@ RUN \
   cd /root/.composer && \
   find . | grep .git | xargs rm -rf && \
   composer clearcache
-
-### PHP FPM Config
-# remove default enabled site
-RUN \
-  mkdir -p /var/www/html/log/supervisor && \
-  git clone https://github.com/NETivism/docker-sh.git /home/docker && \
-  cp -f /home/docker/php/default83.ini /etc/php/8.3/docker_setup.ini && \
-  ln -s /etc/php/8.3/docker_setup.ini /etc/php/8.3/fpm/conf.d/ && \
-  cp -f /home/docker/php/default83_cli.ini /etc/php/8.3/cli/conf.d/ && \
-  cp -f /home/docker/php/default_opcache_blacklist /etc/php/8.3/opcache_blacklist && \
-  sed -i 's/^listen = .*/listen = 80/g' /etc/php/8.3/fpm/pool.d/www.conf && \
-  sed -i 's/^pm = .*/pm = ondemand/g' /etc/php/8.3/fpm/pool.d/www.conf && \
-  sed -i 's/;daemonize = .*/daemonize = no/g' /etc/php/8.3/fpm/php-fpm.conf && \
-  sed -i 's/^pm\.max_children = .*/pm.max_children = 8/g' /etc/php/8.3/fpm/pool.d/www.conf && \
-  sed -i 's/^;pm\.process_idle_timeout = .*/pm.process_idle_timeout = 15s/g' /etc/php/8.3/fpm/pool.d/www.conf && \
-  sed -i 's/^;pm\.max_requests = .*/pm.max_requests = 50/g' /etc/php/8.3/fpm/pool.d/www.conf && \
-  sed -i 's/^;request_terminate_timeout = .*/request_terminate_timeout = 7200/g' /etc/php/8.3/fpm/pool.d/www.conf
 
 RUN \
   mkdir -p /run/php && chmod 777 /run/php
@@ -87,17 +70,13 @@ ENV \
 
 #phpunit
 RUN \
+  git clone https://github.com/NETivism/docker-sh.git /home/docker && \
   mkdir -p /root/phpunit/extensions && \
   wget -O /root/phpunit/phpunit https://phar.phpunit.de/phpunit-10.phar && \
   chmod +x /root/phpunit/phpunit && \
   cp /home/docker/php/phpunit.xml /root/phpunit/ && \
   echo "alias phpunit='phpunit -c ~/phpunit/phpunit.xml'" > /root/.bashrc
 
-# purge
-RUN \
-  apt-get remove -y php8.3-dev gcc make autoconf libc-dev pkg-config php-pear && \
-  apt-get autoremove -y && \
-  apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # node and nvm for playwright
 ENV NODE_VERSION=24
@@ -147,6 +126,11 @@ ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # add initial script
 ADD container/init-10.sh /init.sh
+
+# purge
+RUN \
+  apt-get autoremove -y && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /mnt/neticrm-10/civicrm
 CMD ["/usr/bin/supervisord"]
