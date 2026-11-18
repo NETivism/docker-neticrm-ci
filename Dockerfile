@@ -15,11 +15,11 @@ RUN \
     gawk
 
 #phpunit
+COPY container/phpunit.xml /root/phpunit/phpunit.xml
 RUN \
   mkdir -p /root/phpunit/extensions && \
   wget -O /root/phpunit/phpunit https://phar.phpunit.de/phpunit-5.phar && \
   chmod +x /root/phpunit/phpunit && \
-  cp /home/docker/php/phpunit.xml /root/phpunit/ && \
   echo "alias phpunit='phpunit -c ~/phpunit/phpunit.xml'" > /root/.bashrc
 
 # casperjs
