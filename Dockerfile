@@ -125,6 +125,11 @@ ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # add initial script
 ADD container/init-7.sh /init.sh
 
+# Cloud Run Job entrypoint (image CMD stays supervisord)
+COPY container/ci-run.sh /ci-run.sh
+COPY container/run-all.sh /usr/local/bin/run-all.sh
+RUN chmod +x /ci-run.sh /usr/local/bin/run-all.sh /init.sh
+
 # purge
 RUN \
   apt-get autoremove -y && \
