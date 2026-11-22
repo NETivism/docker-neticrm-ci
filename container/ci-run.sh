@@ -37,6 +37,10 @@ export DRUPAL
 export DRUPAL_ROOT="${DRUPAL_ROOT:-/var/www/html}"
 export RUNPORT="${RUNPORT:-8080}"
 export TZ="${TZ:-Asia/Taipei}"
+# same as `docker run -e` in .github/workflows/ci.yml; tests check it (e.g. the
+# receipt id concurrency test only sleeps when it is set), init.sh only exports it
+# for itself
+export CIVICRM_TEST_DSN="${CIVICRM_TEST_DSN:-mysql://root@localhost/neticrmci}"
 REPO_PATH="${REPO_PATH:-/mnt/neticrm-$DRUPAL/civicrm}"
 SRC_DIR="${SRC_DIR:-/mnt/src}"
 SRC_TARBALL="${SRC_TARBALL:-}"
