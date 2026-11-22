@@ -1,8 +1,11 @@
 FROM ghcr.io/netivism/docker-debian-base:trixie
 MAINTAINER Jimmy Huang <jimmy@netivism.com.tw>
 
+# COMPOSER_ALLOW_SUPERUSER: composer disables plugins when run as root outside
+# docker (no /.dockerenv), e.g. on Cloud Run
 ENV \
   COMPOSER_HOME=/root/.composer \
+  COMPOSER_ALLOW_SUPERUSER=1 \
   PATH=/root/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # basic packages install
