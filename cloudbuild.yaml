@@ -1,0 +1,38 @@
+# Cloud Build: build the Cloud Run CI image and point the Cloud Run Job(s) at it.
+# Triggered on push to this branch (see dispatcher/README.md), or manually:
+#   gcloud builds submit --project netivism-neticrm-ci --region asia-east1 --config cloudbuild.yaml .
+#
+# Cloud Run Jobs pin the image digest when created/updated, so the job must be
+# updated after each push even though the tag stays the same.
+substitutions:
+  _REGION: asia-east1
+  _TAG: cloudrun-php8
+  # space separated Cloud Run Jobs using this image
+  _JOBS: neticrm-ci-test8
+
+options:
+  machineType: E2_HIGHCPU_8
+  logging: CLOUD_LOGGING_ONLY
+  dynamicSubstitutions: true
+
+timeout: 3600s
+
+steps:
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args: ['build', '-t', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/ci/docker-neticrm-ci:${_TAG}', '.']
+
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args: ['push', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/ci/docker-neticrm-ci:${_TAG}']
+
+  - id: update-jobs
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        for job in ${_JOBS}; do
+          gcloud run jobs update "$$job" --region ${_REGION} --quiet \
+            --image ${_REGION}-docker.pkg.dev/${PROJECT_ID}/ci/docker-neticrm-ci:${_TAG} || exit 1
+        done
