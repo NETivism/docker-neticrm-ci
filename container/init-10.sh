@@ -49,7 +49,9 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   echo "Install Drupal ..."
   date +"@ %Y-%m-%d %H:%M:%S %z"
   sleep 5s
-  drush -vv --yes site-install standard --account-name=admin --db-url=mysql://root:@localhost/$DB --account-pass=$PW --site-name=netiCRM
+  # site default and admin user timezone: drupal 10 otherwise defaults to UTC and
+  # civicrm dates (e.g. membership start date) differ from the tests between 00:00-08:00
+  drush -vv --yes site-install standard --account-name=admin --db-url=mysql://root:@localhost/$DB --account-pass=$PW --site-name=netiCRM install_configure_form.date_default_timezone=Asia/Taipei
 
   if [ -f $DRUPAL_ROOT/sites/default/settings.php ]; then
     echo 'date_default_timezone_set("Asia/Taipei");' >> $DRUPAL_ROOT/sites/default/settings.php
