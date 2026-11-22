@@ -71,8 +71,19 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
   echo "\$base_url='';" >> $DRUPAL_ROOT/sites/default/settings.php
 fi
 
-drush runserver 0.0.0.0:$RUNPORT >& /dev/null &
-until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do true; done
+mkdir -p /var/www/html/log
+drush runserver 0.0.0.0:$RUNPORT >> /var/www/html/log/runserver.log 2>&1 &
+# wait for runserver, give up after 120s instead of spinning forever
+WAITED=0
+until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do
+  sleep 1
+  WAITED=$((WAITED + 1))
+  if [ "$WAITED" -ge 120 ]; then
+    echo "drush runserver not listening on ${RUNPORT} after 120s"
+    tail -n 50 /var/www/html/log/runserver.log
+    exit 1
+  fi
+done
 
 # initialize playwright
 echo "Link playwright for testing project"
