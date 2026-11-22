@@ -85,7 +85,19 @@ if [ ! -f $DRUPAL_ROOT/sites/default/settings.php ]; then
 fi
 
 # wait for drupal runserver (managed by supervisord)
-until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do sleep 2; done
+# (re)start runserver: it may have gone FATAL while site-install was running
+supervisorctl start drupal > /dev/null 2>&1
+WAITED=0
+until netstat -an 2>/dev/null | grep "${RUNPORT}.*LISTEN"; do
+  sleep 2
+  WAITED=$((WAITED + 2))
+  if [ "$WAITED" -ge 120 ]; then
+    echo "drush runserver not listening on ${RUNPORT} after 120s"
+    supervisorctl status
+    tail -n 50 /var/www/html/log/supervisor/drupal.log
+    exit 1
+  fi
+done
 
 # initialize playwright
 echo "Link playwright for testing project"
