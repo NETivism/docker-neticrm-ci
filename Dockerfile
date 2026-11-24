@@ -135,5 +135,9 @@ RUN \
   apt-get autoremove -y && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# PHP built-in server (drush runserver) workers, so parallel Playwright
+# workers are served concurrently; read by php -S at start (PHP >= 7.4)
+ENV PHP_CLI_SERVER_WORKERS=4
+
 WORKDIR /mnt/neticrm-7/civicrm
 CMD ["/usr/bin/supervisord"]
