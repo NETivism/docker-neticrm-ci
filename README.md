@@ -1,8 +1,9 @@
 ## Cloud Run Job image
 
 This branch is `drone-php7` plus what is needed to run the tests as a Cloud Run
-Job: `/ci-run.sh` (job entrypoint), `/usr/local/bin/run-all.sh` and
-`cloudbuild.yaml`, which builds the image and updates the job.
+Job: `/ci-run.sh` (job entrypoint) and `cloudbuild.yaml`, which builds the
+image and updates the job. The test steps are not part of the image:
+`/ci-run.sh` runs `tests/ci/run-all.sh` from the netiCRM source under test.
 
 ```
 gcloud builds submit --config cloudbuild.yaml .
