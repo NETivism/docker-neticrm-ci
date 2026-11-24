@@ -2,6 +2,9 @@
 # ==============================================================================
 # Cloud Run Job entrypoint: unpack netiCRM source, install, run tests.
 #
+# The test steps are defined by the code base under test, not by this image:
+# this script runs $REPO_PATH/tests/ci/run-all.sh from the source (required).
+#
 # The image CMD (supervisord) is kept for local / GitHub Actions usage.
 # Cloud Run Jobs run this script instead (--command=/ci-run.sh).
 #
@@ -26,8 +29,8 @@
 #   INIT_TIMEOUT    seconds allowed for /init.sh (default: 900)
 #   SETTINGS_TIMEOUT abort if settings.php is still missing after this (default: 180)
 #
-# Exit code: 0 tests passed, 1 tests failed, 3 source missing,
-#            4 install failed
+# Exit code: 0 tests passed, 1 tests failed, 3 source or tests/ci/run-all.sh
+#            missing, 4 install failed
 # ==============================================================================
 
 set -u -o pipefail
@@ -164,7 +167,7 @@ esac
 # tests
 # ------------------------------------------------------------------------------
 RUN_ALL="$REPO_PATH/tests/ci/run-all.sh"
-[ -f "$RUN_ALL" ] || RUN_ALL=/usr/local/bin/run-all.sh
+[ -f "$RUN_ALL" ] || finish 3 "No tests/ci/run-all.sh in this source, the code base defines the CI steps"
 run_args=()
 [ -n "$RUN_ONLY" ] && run_args+=(--only "$RUN_ONLY")
 # RUN_ALL_ARGS is intentionally unquoted: multiple CLI args
