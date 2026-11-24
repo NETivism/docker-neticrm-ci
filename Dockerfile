@@ -114,8 +114,11 @@ RUN \
   mkdir -p /mnt/neticrm-10/civicrm
 
 ### Add drupal 10 related drush
+# robo 5.2.1-5.2.3 call Application::addCommand() which needs symfony/console >= 7.4,
+# drupal 10 pins console 6.4 so drush crashes; fixed in robo 5.2.4
 RUN \
-  cd /var/www/html && composer update && composer require drush/drush
+  cd /var/www/html && composer update && composer require drush/drush && \
+  composer require "consolidation/robo:^5.2.4"
 
 # we don't have mysql setup on vanilla image
 COPY container/mysql-init.sh /usr/local/bin/mysql-init.sh
