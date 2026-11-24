@@ -10,6 +10,8 @@ if [ -z "$1" ]; then
 fi
 
 CONTAINER_NAME=neticrm-ci-php8
+# published by .github/workflows/docker-publish.yml
+IMAGE=ghcr.io/netivism/docker-neticrm-ci
 TAG_NAME=drone-php8
 DRUPAL_VERSION=7
 
@@ -21,7 +23,7 @@ else
 fi
 
 # always fetch latest image
-docker pull rg.netivism.com.tw/netivism/docker-neticrm-ci:$TAG_NAME
+docker pull $IMAGE:$TAG_NAME
 
 # purge previous container
 EXISTS_CONTAINER=$(docker ps -q -f "name=$CONTAINER_NAME")
@@ -31,9 +33,9 @@ if [ -n $EXISTS_CONTAINER ]; then
 fi
 
 # purge previous images
-OLD_IMAGE=$(docker images rg.netivism.com.tw/netivism/docker-neticrm-ci --filter "dangling=true" -q)
+OLD_IMAGE=$(docker images $IMAGE --filter "dangling=true" -q)
 if [ -n "$OLD_IMAGE" ]; then
-  docker rmi $(docker images rg.netivism.com.tw/netivism/docker-neticrm-ci --filter "dangling=true" -q)
+  docker rmi $(docker images $IMAGE --filter "dangling=true" -q)
 fi
 
 # start container
@@ -48,7 +50,7 @@ docker run -d \
   -e "DRUPAL_ROOT=/var/www/html" \
   -e "CIVICRM_TEST_DSN=mysqli://root@localhost/neticrmci" \
   -e "DRUPAL=$DRUPAL_VERSION" \
-  rg.netivism.com.tw/netivism/docker-neticrm-ci:$TAG_NAME
+  $IMAGE:$TAG_NAME
 
 # install drupal
 docker exec $CONTAINER_NAME /init.sh
